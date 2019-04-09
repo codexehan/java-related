@@ -10,13 +10,16 @@ public class CreateThread {
     public static void main(String[] args) {
         /**
          Thread Status
-         NEW — a new Thread instance that was not yet started via Thread.start()
-         RUNNABLE — a running thread. It is called runnable because at any given time it could be either running or waiting for the next quantum of time from the thread scheduler. A NEW thread enters the RUNNABLE state when you call Thread.start() on it
-         RUNNING
-         BLOCKED — a running thread becomes blocked if it needs to enter a synchronized section but cannot do that due to another thread holding the monitor of this section
+
+         NEW(os) — a new Thread instance that was not yet started via Thread.start()
+         RUNNABLE(os) — a running thread. It is called runnable because at any given time it could be either running or waiting for the next quantum of time from the thread scheduler. A NEW thread enters the RUNNABLE state when you call Thread.start() on it
+         RUNNING(os)
+         BLOCKED(os) — a running thread becomes blocked if it needs to enter a synchronized section but cannot do that due to another thread holding the monitor of this section
          WAITING — a thread enters this state if it waits for another thread to perform a particular action. For instance, a thread enters this state upon calling the Object.wait() method on a monitor it holds, or the Thread.join() method on another thread
          TIMED_WAITING — same as the above, but a thread enters this state after calling timed versions of Thread.sleep(), Object.wait(), Thread.join() and some other methods
-         TERMINATED — a thread has completed the execution of its Runnable.run() method and terminated
+         TERMINATED(os) — a thread has completed the execution of its Runnable.run() method and terminated
+
+
          NEW - 刚创建，为调用start
          RUNNABLE - 调用了start
          RUNNING - 调用了run
