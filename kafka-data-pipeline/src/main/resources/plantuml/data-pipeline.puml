@@ -1,0 +1,86 @@
+@startuml
+hide empty description
+
+state "KafkaConsumer..ProductStatusChangeConsumer"
+
+state "KafkaConsumer..StreetItemUpdateConsumer"
+
+state "KafkaConsumer..ProductConsumer"
+
+state KafkaConsumer..ProductInventoryConsumer
+
+state KafkaConsumer..ProductPriceConsumer
+
+state KafkaMiddleware..ProductValidateMiddleware
+
+state KafkaMiddleware..ProductInventoryValidateMiddleware
+
+state KafkaMiddleware..ProductPriceValidateMiddleware
+
+state KafkaMiddleware..ProductFinalStatusValidateMiddleware
+
+state KafkaMiddleware_ProductStatusChangeMiddleware
+
+state KafkaTopic..DejaProductsGlobal
+state KafkaTopic..DejaProductsPriceGlobal
+state KafkaTopic..DejaProductsInventoryGlobal
+
+state KafkaTopic..DejaProductValidateGlobal
+
+state KafkaTopic..DejaProductPriceValidateGlobal
+
+state KafkaTopic..DejaProductInventoryValidateGlobal
+
+state KafkaTopic..DejaProductFinalStatusGlobal
+
+state KafkaTopic..DejaProductStatusChangeGlobal
+
+state KafkaTopic..DejaStreetItemRefreshGlobal
+
+[*]-->KafkaTopic..DejaProductsGlobal:from data team
+[*]-->KafkaTopic..DejaProductsPriceGlobal:from data team
+[*]-->KafkaTopic..DejaProductsInventoryGlobal:from data team
+[*]-->KafkaTopic..DejaStreetItemRefreshGlobal:from data team
+KafkaTopic..DejaProductsGlobal-->KafkaConsumer..ProductConsumer
+KafkaTopic..DejaProductsGlobal-->KafkaMiddleware..ProductValidateMiddleware
+KafkaMiddleware..ProductValidateMiddleware-->KafkaTopic..DejaProductValidateGlobal
+KafkaMiddleware..ProductValidateMiddleware-->KafkaTopic..DejaProductPriceValidateGlobal
+KafkaTopic..DejaProductValidateGlobal-->KafkaMiddleware..ProductFinalStatusValidateMiddleware
+
+KafkaTopic..DejaProductsPriceGlobal-->KafkaConsumer..ProductPriceConsumer
+KafkaTopic..DejaProductsPriceGlobal-->KafkaMiddleware..ProductPriceValidateMiddleware
+KafkaMiddleware..ProductPriceValidateMiddleware-->KafkaTopic..DejaProductPriceValidateGlobal
+KafkaTopic..DejaProductPriceValidateGlobal-->KafkaMiddleware..ProductFinalStatusValidateMiddleware
+
+KafkaTopic..DejaProductsInventoryGlobal-->KafkaConsumer..ProductInventoryConsumer
+KafkaTopic..DejaProductsInventoryGlobal-->KafkaMiddleware..ProductInventoryValidateMiddleware
+KafkaMiddleware..ProductInventoryValidateMiddleware-->KafkaTopic..DejaProductInventoryValidateGlobal
+KafkaTopic..DejaProductInventoryValidateGlobal-->KafkaMiddleware..ProductFinalStatusValidateMiddleware
+
+KafkaMiddleware..ProductFinalStatusValidateMiddleware-->KafkaTopic..DejaProductFinalStatusGlobal
+KafkaTopic..DejaProductFinalStatusGlobal-->KafkaMiddleware_ProductStatusChangeMiddleware
+KafkaMiddleware_ProductStatusChangeMiddleware-->KafkaTopic..DejaProductStatusChangeGlobal
+
+KafkaTopic..DejaProductStatusChangeGlobal-->KafkaConsumer..ProductStatusChangeConsumer
+KafkaConsumer..ProductStatusChangeConsumer-->KafkaTopic..DejaStreetItemRefreshGlobal
+KafkaConsumer..ProductStatusChangeConsumer-->[*]:to es
+
+KafkaTopic..DejaStreetItemRefreshGlobal-->KafkaConsumer..StreetItemUpdateConsumer
+KafkaConsumer..StreetItemUpdateConsumer-->[*]:to es
+
+KafkaConsumer..ProductConsumer-->[*]:to es
+KafkaConsumer..ProductPriceConsumer-->[*]:to es
+KafkaConsumer..ProductInventoryConsumer-->[*]:to es
+
+KafkaConsumer..ProductStatusChangeConsumer:update product status in real time
+KafkaConsumer..ProductStatusChangeConsumer:1.updateProductStatus(productUpdateMap);
+KafkaConsumer..ProductStatusChangeConsumer:2.updatePsRelation(productUpdateMap);
+KafkaConsumer..ProductStatusChangeConsumer:3.toKafka(productUpdateMap) ..> StreetItemUpdateConsumer;
+
+KafkaConsumer..StreetItemUpdateConsumer:update field of street item and street for analysis in real time
+KafkaConsumer..StreetItemUpdateConsumer:updateCountField(streetItemSet);
+KafkaConsumer..StreetItemUpdateConsumer: .. updateStreetItemCount(streetItemSet);
+KafkaConsumer..StreetItemUpdateConsumer: .. updateStreetForAnalysisRecommend(streetItemSet);
+
+
+@enduml

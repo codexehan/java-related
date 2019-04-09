@@ -1,0 +1,8 @@
+pluginManagement {
+    repositories {
+        gradlePluginPortal()
+    }
+}
+rootProject.name = 'java-related'
+include('kafka-data-pipeline')
+include('concurrency')
