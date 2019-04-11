@@ -1,6 +1,9 @@
 package codexe.han.concurrency.tools;
 
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class BaseBuffer<T> {
     private final T[] buffer;
@@ -68,10 +71,13 @@ class BufferWaitNotify<T> extends BaseBuffer<T>{
         while(isFull()){
             wait();
         }
+        boolean wasEmpty = isEmpty();
         doPut(t);
-        boolean isEmpty = isEmpty();
-        //状态由 满 变为 空 需要进行线程唤醒
-        if(isEmpty){
+        System.out.println("put "+t);
+        //状态由 空 变为 非空 需要进行线程唤醒
+        //主要是告知take操作可以进行take
+        //conditional notify
+        if(wasEmpty){
             notifyAll();
         }
     }
@@ -80,12 +86,175 @@ class BufferWaitNotify<T> extends BaseBuffer<T>{
         while(isEmpty()){
             wait();
         }
+        boolean wasFull = isFull();
         T t = doTake();
-        boolean isFull = isFull();
-        //状态由 空 变为 满 需要进行线程唤醒
-        if(isFull){
+        System.out.println("take "+t);
+        //状态由 满 变为 非满 需要进行线程唤醒
+        //conditional notify
+        //主要是告知put操作可以进行put
+        if(wasFull){
             notifyAll();
         }
         return t;
+    }
+
+    public static void main(String[] args) {
+        BufferWaitNotify<Integer> bufferWaitNotify = new BufferWaitNotify(3);
+        Thread producer1 = new Thread(()->{
+            for(int i =0; i< 5; i++) {
+                try {
+                    bufferWaitNotify.putFast(i);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+
+        });
+        Thread producer2 = new Thread(()->{
+            for(int i =5; i< 10; i++) {
+                try {
+                    bufferWaitNotify.putFast(i);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+
+        });
+
+        Thread consumer1 = new Thread(()->{
+           while(!Thread.currentThread().isInterrupted()){
+               try {
+                   int i = bufferWaitNotify.takeFast();
+               } catch (InterruptedException e) {
+                   e.printStackTrace();
+                   break;
+               }
+           }
+        });
+        Thread consumer2 = new Thread(()->{
+           while(!Thread.currentThread().isInterrupted()){
+               try {
+                   int i = bufferWaitNotify.takeFast();
+               } catch (InterruptedException e) {
+                   e.printStackTrace();
+                   break;
+               }
+           }
+        });
+        producer1.start();
+        producer2.start();
+        consumer1.start();
+        consumer2.start();
+
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        consumer1.interrupt();
+        consumer2.interrupt();
+    }
+}
+
+class BufferLockCondition<T> extends BaseBuffer<T>{
+
+    private final Lock lock = new ReentrantLock();
+    private final Condition notFull = lock.newCondition();
+    private final Condition notEmpty = lock.newCondition();
+
+    public BufferLockCondition(int capacity) {
+        super(capacity);
+    }
+
+    public void put(T t) throws InterruptedException {
+        lock.lock();//get lock
+        try {
+            while (isFull()) {
+                notFull.await();
+            }
+            boolean wasEmpty = isEmpty();
+            doPut(t);
+            System.out.println("put "+t);
+            if(wasEmpty){
+                notEmpty.signalAll();
+            }
+        }finally {
+            lock.unlock();
+        }
+    }
+
+    public T take() throws InterruptedException {
+        lock.lock();
+        try{
+            while(isEmpty()){
+                notEmpty.await();
+            }
+            boolean wasFull = isFull();
+            T t = doTake();
+            System.out.println("take "+t);
+            if(wasFull){
+                notFull.signalAll();
+            }
+            return t;
+        }finally {
+            lock.unlock();
+        }
+    }
+
+    public static void main(String[] args) {
+        BufferLockCondition<Integer> bufferLockCondition = new BufferLockCondition<Integer>(3);
+        Thread producer1 = new Thread(()->{
+            for(int i =0; i< 5; i++) {
+                try {
+                    bufferLockCondition.put(i);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+
+        });
+        Thread producer2 = new Thread(()->{
+            for(int i =5; i< 10; i++) {
+                try {
+                    bufferLockCondition.put(i);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+
+        });
+
+        Thread consumer1 = new Thread(()->{
+            while(!Thread.currentThread().isInterrupted()){
+                try {
+                    int i = bufferLockCondition.take();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                    break;
+                }
+            }
+        });
+        Thread consumer2 = new Thread(()->{
+            while(!Thread.currentThread().isInterrupted()){
+                try {
+                    int i = bufferLockCondition.take();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                    break;
+                }
+            }
+        });
+        producer1.start();
+        producer2.start();
+        consumer1.start();
+        consumer2.start();
+
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        consumer1.interrupt();
+        consumer2.interrupt();
     }
 }
