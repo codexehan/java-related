@@ -7,3 +7,4 @@ rootProject.name = 'java-related'
 include('kafka-data-pipeline')
 include('concurrency')
 include('rabbitmq')
+include('nio')
