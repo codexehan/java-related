@@ -25,7 +25,6 @@ public class TestProductConsumer {
     public static void main(String[] args) {
          //   String bootstrapServer = "172.28.10.59:9090,172.28.10.59:9091,172.28.10.59:9092";
             String bootstrapServer = "172.28.2.22:9090,172.28.2.22:9091,172.28.2.22:9092";
-        //String bootstrapServer = "10.60.7.119:9092,10.60.7.119:9091,10.60.7.119:9090";
 
         String ip = "172.28.10.59";
         int port = 9200;

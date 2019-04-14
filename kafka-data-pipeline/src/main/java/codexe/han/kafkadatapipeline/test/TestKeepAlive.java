@@ -26,7 +26,7 @@ import java.util.Map;
 @Slf4j
 public class TestKeepAlive {
     public static void main(String[] args) {
-        String ip = "10.60.6.147";
+        String ip = "";
 
         int port = 9200;
         String schema = "http";

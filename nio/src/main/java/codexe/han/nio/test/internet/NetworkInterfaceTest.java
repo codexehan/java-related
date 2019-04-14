@@ -1,4 +1,4 @@
-package codexe.han.nio.test;
+package codexe.han.nio.test.internet;
 
 import java.net.InetAddress;
 import java.net.NetworkInterface;

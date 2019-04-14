@@ -167,8 +167,8 @@ public class MoveRedeemData {
                 5408164L
         };
 
-        //String ip = "172.28.10.67";
-        String ip = "10.60.6.147";
+        String ip = "172.28.10.67";
+
 
         int port = 9200;
         String schema = "http";
