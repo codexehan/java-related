@@ -1,5 +1,8 @@
 package codexe.han.concurrency.tools;
 
+import java.util.concurrent.Semaphore;
+import java.util.concurrent.locks.ReentrantLock;
+
 public class VariousLock {
     /**
      * 乐观锁 CAS
@@ -27,6 +30,41 @@ public class VariousLock {
      *
      *      硬件中断
      *          时钟，外设
+     * kafka读写速度快的一个原因是，使用linux sendFile指令（java中的FileChannel中的transferTo）直接在内核态将文件读取到read buffer,然后读取到NIC 进行socket传输。
+     * 省去了由内核态转换为用户态，用户态再到内核态的过程，实现了zero copy
      *
      */
+
+
+    /**
+     * Synchronized
+     * 作用于方法，锁住的是对象实例 this
+     * 作用于静态方法，锁住的是Class 实例，因为Class相关数据是存储在永久带PermGen，永久带是全局共享的，因此静态方法锁相当于类的一个全局锁，会锁住所有调用该方法的线程
+     * 作用于对象实例，锁住的是所有以该对象为锁的代码块。
+     *
+     * 核心组件
+     * Wait Set: 调用wait方法被阻塞的线程放在这里
+     * Contention List: 竞争队列， 所有请求锁的线程首先被放在这个竞争队列中
+     * Entry List: Contention List有资格成为候选资源的线程被移动到entry list中
+     * OnDeck: 任意时刻，最多只有一个线程正在竞争锁资源，该线程被称为OnDeck
+     *
+     * contention list->entry list->OnDeck->owner->wait set->entry list
+     */
+
+    public void useSemaphore(){
+        Semaphore semp = new Semaphore(5);
+        try{
+            semp.acquire();//可相应中断，与ReentrantLock.lockInterruptibly()效果一直
+            try{
+                System.out.println("get one semaphore");
+            }finally {
+                semp.release();
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+
 }
