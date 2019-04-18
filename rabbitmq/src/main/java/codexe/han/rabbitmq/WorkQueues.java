@@ -5,13 +5,14 @@ import com.rabbitmq.client.*;
 import java.io.IOException;
 import java.util.concurrent.TimeoutException;
 
-/**
- * rabbitmq 基本概念 https://www.rabbitmq.com/tutorials/amqp-concepts.html
- */
-public class HelloRabbitMq {
+public class WorkQueues {
+    /**
+     * 多个worker 消费同一个queue
+     */
+
 }
 
-class Send{
+class SendWorkQueues{
     private final static String QUEUE_NAME = "hello";
 
     public static void main(String[] args) {
@@ -69,7 +70,7 @@ class Send{
     }
 
 }
-class Recv{
+class RecvWorkQueues{
     private volatile boolean exit = false;
     private final static String QUEUE_NAME = "hello";
 
@@ -113,9 +114,3 @@ class Recv{
 
     }
 }
-
-/**
- * 实现延时队列
- * 先声明一个queue，设置x-message-ttl，在此时间之内，消息未被消费，将会被discard
- * 设置exchange x-dead-letter-exchange，被拒绝，nacked，或者ttl时间过期的消息会被发送到 dead-letter-exchange，然后routing key会被修改为设定的x-dead-letter-routing-key
- */
