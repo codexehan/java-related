@@ -5,7 +5,7 @@ import com.rabbitmq.client.*;
 import java.io.IOException;
 import java.util.concurrent.TimeoutException;
 
-public class WorkQueues {
+public class WorkQueuesFairDispatch {
 
     /**
      * Fair dispatch and durable
