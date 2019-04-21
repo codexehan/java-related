@@ -10,6 +10,7 @@ import java.net.URLConnection;
 
 /**
  * URLConnection download binary file
+ * 下载二进制文件 图片
  */
 public class DownloadBinaryFile {
     public static void main(String[] args) {
