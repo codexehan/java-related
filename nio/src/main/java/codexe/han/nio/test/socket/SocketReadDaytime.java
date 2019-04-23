@@ -6,6 +6,13 @@ import java.io.InputStreamReader;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
+/**
+ * new Socket(String ip, int port)
+ * new Socket(InetAddress address, int port)
+ * 创建socket 并连接
+ *
+ * 其余构造函数不会连接
+ */
 public class SocketReadDaytime {
     public static void main(String[] args) {
         try(Socket socket = new Socket("time.nist.gov",13)){//telnet time.nist.gov 13
