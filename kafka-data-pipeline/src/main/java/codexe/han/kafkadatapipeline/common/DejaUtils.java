@@ -1,4 +1,4 @@
-package deja.fashion.datapipeline.common;
+package codexe.han.kafkadatapipeline.common;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonFactory;
@@ -6,9 +6,9 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import deja.fashion.datapipeline.dto.ProductPriceDTO;
-import deja.fashion.datapipeline.dto.inventory.ProductInventoryComboDTO;
-import deja.fashion.datapipeline.dto.product.ProductDTO;
+import codexe.han.kafkadatapipeline.dto.ProductPriceDTO;
+import codexe.han.kafkadatapipeline.dto.inventory.ProductInventoryComboDTO;
+import codexe.han.kafkadatapipeline.dto.product.ProductDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.apache.kafka.clients.consumer.KafkaConsumer;

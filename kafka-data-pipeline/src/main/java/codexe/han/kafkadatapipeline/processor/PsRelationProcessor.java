@@ -1,7 +1,7 @@
-package deja.fashion.datapipeline.processor;
+package codexe.han.kafkadatapipeline.processor;
 
-import deja.fashion.datapipeline.common.Constants;
-import deja.fashion.datapipeline.dto.streetsnap.PsRelationDTO;
+import codexe.han.kafkadatapipeline.common.Constants;
+import codexe.han.kafkadatapipeline.dto.streetsnap.PsRelationDTO;
 import org.apache.kafka.streams.KeyValue;
 import org.apache.kafka.streams.processor.Processor;
 import org.apache.kafka.streams.processor.ProcessorContext;

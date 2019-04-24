@@ -1,6 +1,6 @@
-package deja.fashion.datapipeline.test;
+package codexe.han.kafkadatapipeline.test;
 
-import deja.fashion.datapipeline.common.Constants;
+import codexe.han.kafkadatapipeline.common.Constants;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.HttpHost;
 import org.elasticsearch.action.bulk.BulkRequest;

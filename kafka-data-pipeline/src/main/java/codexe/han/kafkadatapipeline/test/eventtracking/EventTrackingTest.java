@@ -1,10 +1,10 @@
-package deja.fashion.datapipeline.test.eventtracking;
+package codexe.han.kafkadatapipeline.test.eventtracking;
 
-import deja.fashion.datapipeline.common.Constants;
-import deja.fashion.datapipeline.consumer.eventtracking.EventTrackingConsumer;
-import deja.fashion.datapipeline.dto.eventtracking.EventTrackingEvent;
-import deja.fashion.datapipeline.serde.DejaJsonSerde;
-import deja.fashion.datapipeline.test.useless.InfluencerRaceJsonSerde;
+import codexe.han.kafkadatapipeline.common.Constants;
+import codexe.han.kafkadatapipeline.consumer.eventtracking.EventTrackingConsumer;
+import codexe.han.kafkadatapipeline.dto.eventtracking.EventTrackingEvent;
+import codexe.han.kafkadatapipeline.serde.DejaJsonSerde;
+import codexe.han.kafkadatapipeline.test.useless.InfluencerRaceJsonSerde;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.common.serialization.StringDeserializer;
 

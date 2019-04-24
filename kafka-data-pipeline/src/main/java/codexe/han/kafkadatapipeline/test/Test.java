@@ -1,4 +1,4 @@
-package deja.fashion.datapipeline.test;
+package codexe.han.kafkadatapipeline.test;
 
 import lombok.extern.slf4j.Slf4j;
 

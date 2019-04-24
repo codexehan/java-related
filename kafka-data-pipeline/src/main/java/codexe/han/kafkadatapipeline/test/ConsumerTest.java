@@ -1,9 +1,9 @@
-package deja.fashion.datapipeline.test;
+package codexe.han.kafkadatapipeline.test;
 
-import deja.fashion.datapipeline.common.Constants;
-import deja.fashion.datapipeline.consumer.DataConsumer;
-import deja.fashion.datapipeline.dto.influencer.InfluencerRaceDTO;
-import deja.fashion.datapipeline.test.useless.InfluencerRaceJsonSerde;
+import codexe.han.kafkadatapipeline.common.Constants;
+import codexe.han.kafkadatapipeline.consumer.DataConsumer;
+import codexe.han.kafkadatapipeline.dto.influencer.InfluencerRaceDTO;
+import codexe.han.kafkadatapipeline.test.useless.InfluencerRaceJsonSerde;
 import org.apache.kafka.common.serialization.LongDeserializer;
 
 public class ConsumerTest {

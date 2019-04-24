@@ -1,4 +1,4 @@
-package deja.fashion.datapipeline.serde;
+package codexe.han.kafkadatapipeline.serde;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -6,7 +6,7 @@ import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import deja.fashion.datapipeline.dto.product.ProductDTO;
+import codexe.han.kafkadatapipeline.dto.product.ProductDTO;
 import lombok.Builder;
 import lombok.Data;
 import org.apache.kafka.common.errors.SerializationException;

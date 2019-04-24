@@ -1,4 +1,4 @@
-package deja.fashion.datapipeline.management;
+package codexe.han.kafkadatapipeline.management;
 
 import kafka.admin.AdminUtils;
 import kafka.utils.ZKStringSerializer$;

@@ -1,8 +1,8 @@
-package deja.fashion.datapipeline.service.Impl;
+package codexe.han.kafkadatapipeline.service.Impl;
 
-import deja.fashion.datapipeline.entity.PipelineKafkaOffset;
-import deja.fashion.datapipeline.repository.PipelineKafkaOffsetRepository;
-import deja.fashion.datapipeline.service.PipelineKafkaOffsetService;
+import codexe.han.kafkadatapipeline.entity.PipelineKafkaOffset;
+import codexe.han.kafkadatapipeline.repository.PipelineKafkaOffsetRepository;
+import codexe.han.kafkadatapipeline.service.PipelineKafkaOffsetService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;

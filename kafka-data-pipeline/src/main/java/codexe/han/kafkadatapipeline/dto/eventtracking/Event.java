@@ -1,4 +1,4 @@
-package deja.fashion.datapipeline.dto.eventtracking;
+package codexe.han.kafkadatapipeline.dto.eventtracking;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;

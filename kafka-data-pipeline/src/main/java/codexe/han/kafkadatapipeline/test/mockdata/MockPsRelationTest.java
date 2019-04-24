@@ -1,9 +1,9 @@
-package deja.fashion.datapipeline.test.mockdata;
+package codexe.han.kafkadatapipeline.test.mockdata;
 
-import deja.fashion.datapipeline.client.ElasticsearchClient;
-import deja.fashion.datapipeline.common.Constants;
-import deja.fashion.datapipeline.common.DejaUtils;
-import deja.fashion.datapipeline.dto.ProductPriceDTO;
+import codexe.han.kafkadatapipeline.client.ElasticsearchClient;
+import codexe.han.kafkadatapipeline.common.Constants;
+import codexe.han.kafkadatapipeline.common.DejaUtils;
+import codexe.han.kafkadatapipeline.dto.ProductPriceDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.elasticsearch.action.bulk.BulkRequest;
 import org.elasticsearch.action.bulk.BulkResponse;

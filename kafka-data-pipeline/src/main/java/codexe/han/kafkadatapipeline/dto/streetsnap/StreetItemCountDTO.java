@@ -1,4 +1,4 @@
-package deja.fashion.datapipeline.dto.streetsnap;
+package codexe.han.kafkadatapipeline.dto.streetsnap;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

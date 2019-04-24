@@ -1,7 +1,7 @@
-package deja.fashion.datapipeline.config;
+package codexe.han.kafkadatapipeline.config;
 
-import deja.fashion.datapipeline.client.ElasticsearchClient;
-import deja.fashion.datapipeline.properties.DataPipelineProperties;
+import codexe.han.kafkadatapipeline.client.ElasticsearchClient;
+import codexe.han.kafkadatapipeline.properties.DataPipelineProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

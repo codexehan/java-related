@@ -1,7 +1,7 @@
-package deja.fashion.datapipeline.middleware.product;
+package codexe.han.kafkadatapipeline.middleware.product;
 
-import deja.fashion.datapipeline.common.Constants;
-import deja.fashion.datapipeline.processor.*;
+import codexe.han.kafkadatapipeline.common.Constants;
+import codexe.han.kafkadatapipeline.processor.*;
 import lombok.Builder;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;

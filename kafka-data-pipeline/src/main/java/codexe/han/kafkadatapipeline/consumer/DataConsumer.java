@@ -1,11 +1,11 @@
-package deja.fashion.datapipeline.consumer;
+package codexe.han.kafkadatapipeline.consumer;
 
-import deja.fashion.datapipeline.client.ElasticsearchClient;
-import deja.fashion.datapipeline.common.Constants;
-import deja.fashion.datapipeline.dto.DataBaseDTO;
-import deja.fashion.datapipeline.entity.PipelineKafkaOffset;
-import deja.fashion.datapipeline.service.Impl.PipelineKafkaOffsetServiceImpl;
-import deja.fashion.datapipeline.service.PipelineKafkaOffsetService;
+import codexe.han.kafkadatapipeline.client.ElasticsearchClient;
+import codexe.han.kafkadatapipeline.common.Constants;
+import codexe.han.kafkadatapipeline.dto.DataBaseDTO;
+import codexe.han.kafkadatapipeline.entity.PipelineKafkaOffset;
+import codexe.han.kafkadatapipeline.service.Impl.PipelineKafkaOffsetServiceImpl;
+import codexe.han.kafkadatapipeline.service.PipelineKafkaOffsetService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.ConsumerRecord;

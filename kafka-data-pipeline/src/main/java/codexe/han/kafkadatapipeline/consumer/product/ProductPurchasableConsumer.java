@@ -1,6 +1,6 @@
-package deja.fashion.datapipeline.consumer.product;
+package codexe.han.kafkadatapipeline.consumer.product;
 
-import deja.fashion.datapipeline.consumer.DataConsumer;
+import codexe.han.kafkadatapipeline.consumer.DataConsumer;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;

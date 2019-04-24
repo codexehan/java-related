@@ -1,8 +1,8 @@
-package deja.fashion.datapipeline.test.useless;
+package codexe.han.kafkadatapipeline.test.useless;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import deja.fashion.datapipeline.dto.ProductPriceDTO;
-import deja.fashion.datapipeline.dto.product.ProductDTO;
+import codexe.han.kafkadatapipeline.dto.ProductPriceDTO;
+import codexe.han.kafkadatapipeline.dto.product.ProductDTO;
 import org.apache.kafka.common.errors.SerializationException;
 import org.apache.kafka.common.serialization.Deserializer;
 import org.apache.kafka.common.serialization.Serde;

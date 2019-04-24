@@ -1,4 +1,4 @@
-package deja.fashion.datapipeline.entity;
+package codexe.han.kafkadatapipeline.entity;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;

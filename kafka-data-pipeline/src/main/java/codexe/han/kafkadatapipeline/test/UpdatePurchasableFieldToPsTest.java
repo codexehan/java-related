@@ -1,9 +1,9 @@
-package deja.fashion.datapipeline.test;
+package codexe.han.kafkadatapipeline.test;
 
-import deja.fashion.datapipeline.common.Constants;
-import deja.fashion.datapipeline.consumer.refresh.StreetItemUpdateConsumer;
-import deja.fashion.datapipeline.service.Impl.PipelineKafkaOffsetServiceImpl;
-import deja.fashion.datapipeline.test.useless.InfluencerRaceJsonSerde;
+import codexe.han.kafkadatapipeline.common.Constants;
+import codexe.han.kafkadatapipeline.consumer.refresh.StreetItemUpdateConsumer;
+import codexe.han.kafkadatapipeline.service.Impl.PipelineKafkaOffsetServiceImpl;
+import codexe.han.kafkadatapipeline.test.useless.InfluencerRaceJsonSerde;
 import org.apache.kafka.common.serialization.LongDeserializer;
 
 public class UpdatePurchasableFieldToPsTest {

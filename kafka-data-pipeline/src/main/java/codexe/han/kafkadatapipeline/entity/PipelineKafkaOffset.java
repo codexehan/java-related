@@ -1,4 +1,4 @@
-package deja.fashion.datapipeline.entity;
+package codexe.han.kafkadatapipeline.entity;
 
 import lombok.*;
 

@@ -1,11 +1,11 @@
-package deja.fashion.datapipeline.test.productstatus;
+package codexe.han.kafkadatapipeline.test.productstatus;
 
-import deja.fashion.datapipeline.common.Constants;
-import deja.fashion.datapipeline.dto.ProductPriceDTO;
-import deja.fashion.datapipeline.dto.inventory.ProductInventoryComboDTO;
-import deja.fashion.datapipeline.dto.inventory.ProductInventoryDTO;
-import deja.fashion.datapipeline.dto.product.*;
-import deja.fashion.datapipeline.serde.DejaJsonSerde;
+import codexe.han.kafkadatapipeline.common.Constants;
+import codexe.han.kafkadatapipeline.dto.ProductPriceDTO;
+import codexe.han.kafkadatapipeline.dto.inventory.ProductInventoryComboDTO;
+import codexe.han.kafkadatapipeline.dto.inventory.ProductInventoryDTO;
+import codexe.han.kafkadatapipeline.dto.product.*;
+import codexe.han.kafkadatapipeline.serde.DejaJsonSerde;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.clients.producer.RecordMetadata;

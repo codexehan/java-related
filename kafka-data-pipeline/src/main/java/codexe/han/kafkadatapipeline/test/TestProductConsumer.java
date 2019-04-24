@@ -1,11 +1,11 @@
-package deja.fashion.datapipeline.test;
+package codexe.han.kafkadatapipeline.test;
 
-import deja.fashion.datapipeline.common.Constants;
-import deja.fashion.datapipeline.consumer.product.ProductConsumer;
-import deja.fashion.datapipeline.dto.product.ProductDTO;
-import deja.fashion.datapipeline.serde.DejaJsonSerde;
-import deja.fashion.datapipeline.service.Impl.PipelineKafkaOffsetServiceImpl;
-import deja.fashion.datapipeline.service.PipelineKafkaOffsetService;
+import codexe.han.kafkadatapipeline.common.Constants;
+import codexe.han.kafkadatapipeline.consumer.product.ProductConsumer;
+import codexe.han.kafkadatapipeline.dto.product.ProductDTO;
+import codexe.han.kafkadatapipeline.serde.DejaJsonSerde;
+import codexe.han.kafkadatapipeline.service.Impl.PipelineKafkaOffsetServiceImpl;
+import codexe.han.kafkadatapipeline.service.PipelineKafkaOffsetService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.ConsumerRecord;

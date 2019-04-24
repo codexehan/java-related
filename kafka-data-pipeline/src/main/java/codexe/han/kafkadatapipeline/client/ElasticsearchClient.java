@@ -1,4 +1,4 @@
-package deja.fashion.datapipeline.client;
+package codexe.han.kafkadatapipeline.client;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.HttpHost;

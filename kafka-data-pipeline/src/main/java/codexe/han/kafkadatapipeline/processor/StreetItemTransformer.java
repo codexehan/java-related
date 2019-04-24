@@ -1,8 +1,8 @@
-package deja.fashion.datapipeline.processor;
+package codexe.han.kafkadatapipeline.processor;
 
-import deja.fashion.datapipeline.common.Constants;
-import deja.fashion.datapipeline.dto.streetsnap.StreetItemDTO;
-import deja.fashion.datapipeline.dto.streetsnap.StreetItemUpdateDTO;
+import codexe.han.kafkadatapipeline.common.Constants;
+import codexe.han.kafkadatapipeline.dto.streetsnap.StreetItemDTO;
+import codexe.han.kafkadatapipeline.dto.streetsnap.StreetItemUpdateDTO;
 import org.apache.kafka.streams.KeyValue;
 import org.apache.kafka.streams.kstream.Transformer;
 import org.apache.kafka.streams.kstream.TransformerSupplier;

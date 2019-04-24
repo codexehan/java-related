@@ -1,10 +1,10 @@
-package deja.fashion.datapipeline.test.useless;
+package codexe.han.kafkadatapipeline.test.useless;
 
-import deja.fashion.datapipeline.client.ElasticsearchClient;
-import deja.fashion.datapipeline.common.Constants;
-import deja.fashion.datapipeline.dto.influencer.InfluencerDTO;
-import deja.fashion.datapipeline.dto.inventory.ProductInventoryComboDTO;
-import deja.fashion.datapipeline.properties.DataPipelineProperties;
+import codexe.han.kafkadatapipeline.client.ElasticsearchClient;
+import codexe.han.kafkadatapipeline.common.Constants;
+import codexe.han.kafkadatapipeline.dto.influencer.InfluencerDTO;
+import codexe.han.kafkadatapipeline.dto.inventory.ProductInventoryComboDTO;
+import codexe.han.kafkadatapipeline.properties.DataPipelineProperties;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.ConsumerRecord;

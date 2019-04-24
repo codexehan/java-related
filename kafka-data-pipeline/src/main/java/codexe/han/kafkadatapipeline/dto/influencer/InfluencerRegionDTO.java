@@ -1,4 +1,4 @@
-package deja.fashion.datapipeline.dto.influencer;
+package codexe.han.kafkadatapipeline.dto.influencer;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

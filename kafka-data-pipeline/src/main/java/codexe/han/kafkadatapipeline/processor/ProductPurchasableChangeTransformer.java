@@ -1,7 +1,7 @@
-package deja.fashion.datapipeline.processor;
+package codexe.han.kafkadatapipeline.processor;
 
-import deja.fashion.datapipeline.common.Constants;
-import deja.fashion.datapipeline.dto.product.ProductStatusChangeDTO;
+import codexe.han.kafkadatapipeline.common.Constants;
+import codexe.han.kafkadatapipeline.dto.product.ProductStatusChangeDTO;
 import org.apache.kafka.streams.kstream.ValueTransformerWithKey;
 import org.apache.kafka.streams.kstream.ValueTransformerWithKeySupplier;
 import org.apache.kafka.streams.processor.ProcessorContext;

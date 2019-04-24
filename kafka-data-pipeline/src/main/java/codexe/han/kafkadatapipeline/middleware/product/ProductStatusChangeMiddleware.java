@@ -1,9 +1,9 @@
-package deja.fashion.datapipeline.middleware.product;
+package codexe.han.kafkadatapipeline.middleware.product;
 
-import deja.fashion.datapipeline.common.Constants;
-import deja.fashion.datapipeline.dto.product.ProductStatusChangeDTO;
-import deja.fashion.datapipeline.processor.ProductPurchasableChangeTransformer;
-import deja.fashion.datapipeline.serde.DejaJsonSerde;
+import codexe.han.kafkadatapipeline.common.Constants;
+import codexe.han.kafkadatapipeline.dto.product.ProductStatusChangeDTO;
+import codexe.han.kafkadatapipeline.processor.ProductPurchasableChangeTransformer;
+import codexe.han.kafkadatapipeline.serde.DejaJsonSerde;
 import lombok.Builder;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;

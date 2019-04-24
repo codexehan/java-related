@@ -1,10 +1,10 @@
-package deja.fashion.datapipeline.consumer.refresh;
+package codexe.han.kafkadatapipeline.consumer.refresh;
 
-import deja.fashion.datapipeline.common.Constants;
-import deja.fashion.datapipeline.consumer.DataConsumer;
-import deja.fashion.datapipeline.entity.PipelineKafkaOffset;
-import deja.fashion.datapipeline.service.Impl.PipelineKafkaOffsetServiceImpl;
-import deja.fashion.datapipeline.service.PipelineKafkaOffsetService;
+import codexe.han.kafkadatapipeline.common.Constants;
+import codexe.han.kafkadatapipeline.consumer.DataConsumer;
+import codexe.han.kafkadatapipeline.entity.PipelineKafkaOffset;
+import codexe.han.kafkadatapipeline.service.Impl.PipelineKafkaOffsetServiceImpl;
+import codexe.han.kafkadatapipeline.service.PipelineKafkaOffsetService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;

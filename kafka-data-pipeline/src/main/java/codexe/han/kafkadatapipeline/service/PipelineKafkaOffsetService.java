@@ -1,6 +1,6 @@
-package deja.fashion.datapipeline.service;
+package codexe.han.kafkadatapipeline.service;
 
-import deja.fashion.datapipeline.entity.PipelineKafkaOffset;
+import codexe.han.kafkadatapipeline.entity.PipelineKafkaOffset;
 
 public interface PipelineKafkaOffsetService {
     PipelineKafkaOffset getKafkaOffsetByTopicName(String topicName);

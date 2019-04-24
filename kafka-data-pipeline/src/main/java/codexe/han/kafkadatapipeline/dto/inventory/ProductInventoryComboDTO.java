@@ -1,4 +1,4 @@
-package deja.fashion.datapipeline.dto.inventory;
+package codexe.han.kafkadatapipeline.dto.inventory;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -20,5 +20,5 @@ public class ProductInventoryComboDTO {
     private Long productId;
 
     @JsonProperty("inventory_list")
-    private List<ProductInventoryDTO> productInventoryDTOList;
+    private List<codexe.han.kafkadatapipeline.dto.inventory.ProductInventoryDTO> productInventoryDTOList;
 }

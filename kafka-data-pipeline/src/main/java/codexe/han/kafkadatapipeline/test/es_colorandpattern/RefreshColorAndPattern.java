@@ -1,6 +1,6 @@
-package deja.fashion.datapipeline.test.es_colorandpattern;
+package codexe.han.kafkadatapipeline.test.es_colorandpattern;
 
-import deja.fashion.datapipeline.common.Constants;
+import codexe.han.kafkadatapipeline.common.Constants;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.HttpHost;
 import org.elasticsearch.action.update.UpdateRequest;

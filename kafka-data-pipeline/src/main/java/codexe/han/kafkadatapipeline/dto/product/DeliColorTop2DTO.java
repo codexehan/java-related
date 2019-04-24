@@ -1,4 +1,4 @@
-package deja.fashion.datapipeline.dto.product;
+package codexe.han.kafkadatapipeline.dto.product;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;

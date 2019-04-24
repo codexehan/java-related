@@ -1,4 +1,4 @@
-package deja.fashion.datapipeline.common;
+package codexe.han.kafkadatapipeline.common;
 
 public class Constants {
 

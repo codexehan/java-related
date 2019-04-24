@@ -1,8 +1,8 @@
-package deja.fashion.datapipeline.dto.influencer;
+package codexe.han.kafkadatapipeline.dto.influencer;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import deja.fashion.datapipeline.dto.DataBaseDTO;
+import codexe.han.kafkadatapipeline.dto.DataBaseDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

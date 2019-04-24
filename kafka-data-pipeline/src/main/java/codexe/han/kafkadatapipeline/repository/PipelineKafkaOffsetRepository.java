@@ -1,6 +1,6 @@
-package deja.fashion.datapipeline.repository;
+package codexe.han.kafkadatapipeline.repository;
 
-import deja.fashion.datapipeline.entity.PipelineKafkaOffset;
+import codexe.han.kafkadatapipeline.entity.PipelineKafkaOffset;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;

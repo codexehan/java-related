@@ -1,8 +1,8 @@
-package deja.fashion.datapipeline.consumer.streetsnap;
+package codexe.han.kafkadatapipeline.consumer.streetsnap;
 
-import deja.fashion.datapipeline.consumer.DataConsumer;
-import deja.fashion.datapipeline.dto.streetsnap.StreetForAnalysisDTO;
-import deja.fashion.datapipeline.service.PipelineKafkaOffsetService;
+import codexe.han.kafkadatapipeline.consumer.DataConsumer;
+import codexe.han.kafkadatapipeline.dto.streetsnap.StreetForAnalysisDTO;
+import codexe.han.kafkadatapipeline.service.PipelineKafkaOffsetService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;

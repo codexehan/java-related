@@ -1,4 +1,4 @@
-package deja.fashion.datapipeline.dto.inventory;
+package codexe.han.kafkadatapipeline.dto.inventory;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;

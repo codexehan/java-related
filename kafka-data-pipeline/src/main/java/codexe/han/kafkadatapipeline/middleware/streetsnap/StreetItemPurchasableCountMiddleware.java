@@ -1,13 +1,13 @@
-package deja.fashion.datapipeline.middleware.streetsnap;
+package codexe.han.kafkadatapipeline.middleware.streetsnap;
 
-import deja.fashion.datapipeline.common.Constants;
-import deja.fashion.datapipeline.dto.streetsnap.PsRelationDTO;
-import deja.fashion.datapipeline.dto.streetsnap.StreetItemDTO;
-import deja.fashion.datapipeline.dto.streetsnap.StreetItemUpdateDTO;
-import deja.fashion.datapipeline.processor.PsRelationProcessor;
-import deja.fashion.datapipeline.processor.StreetItemTransformer;
-import deja.fashion.datapipeline.processor.StreetItemPurchasableCountUpdateTransformer;
-import deja.fashion.datapipeline.serde.DejaJsonSerde;
+import codexe.han.kafkadatapipeline.common.Constants;
+import codexe.han.kafkadatapipeline.dto.streetsnap.PsRelationDTO;
+import codexe.han.kafkadatapipeline.dto.streetsnap.StreetItemDTO;
+import codexe.han.kafkadatapipeline.dto.streetsnap.StreetItemUpdateDTO;
+import codexe.han.kafkadatapipeline.processor.PsRelationProcessor;
+import codexe.han.kafkadatapipeline.processor.StreetItemTransformer;
+import codexe.han.kafkadatapipeline.processor.StreetItemPurchasableCountUpdateTransformer;
+import codexe.han.kafkadatapipeline.serde.DejaJsonSerde;
 import lombok.Builder;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;

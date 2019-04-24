@@ -1,11 +1,11 @@
-package deja.fashion.datapipeline.middleware.product;
+package codexe.han.kafkadatapipeline.middleware.product;
 
-import deja.fashion.datapipeline.common.Constants;
-import deja.fashion.datapipeline.common.DejaUtils;
-import deja.fashion.datapipeline.dto.inventory.ProductInventoryComboDTO;
-import deja.fashion.datapipeline.dto.inventory.ProductInventoryDTO;
-import deja.fashion.datapipeline.dto.product.ProductDTO;
-import deja.fashion.datapipeline.serde.DejaJsonSerde;
+import codexe.han.kafkadatapipeline.common.Constants;
+import codexe.han.kafkadatapipeline.common.DejaUtils;
+import codexe.han.kafkadatapipeline.dto.inventory.ProductInventoryComboDTO;
+import codexe.han.kafkadatapipeline.dto.inventory.ProductInventoryDTO;
+import codexe.han.kafkadatapipeline.dto.product.ProductDTO;
+import codexe.han.kafkadatapipeline.serde.DejaJsonSerde;
 import lombok.Builder;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;

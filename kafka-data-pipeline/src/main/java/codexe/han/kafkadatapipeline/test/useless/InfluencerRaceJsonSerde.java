@@ -1,8 +1,8 @@
-package deja.fashion.datapipeline.test.useless;
+package codexe.han.kafkadatapipeline.test.useless;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import deja.fashion.datapipeline.dto.influencer.InfluencerDTO;
-import deja.fashion.datapipeline.dto.influencer.InfluencerRaceDTO;
+import codexe.han.kafkadatapipeline.dto.influencer.InfluencerDTO;
+import codexe.han.kafkadatapipeline.dto.influencer.InfluencerRaceDTO;
 import org.apache.kafka.common.errors.SerializationException;
 import org.apache.kafka.common.serialization.Deserializer;
 import org.apache.kafka.common.serialization.Serde;

@@ -1,4 +1,4 @@
-package deja.fashion.datapipeline.dto.streetsnap;
+package codexe.han.kafkadatapipeline.dto.streetsnap;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;

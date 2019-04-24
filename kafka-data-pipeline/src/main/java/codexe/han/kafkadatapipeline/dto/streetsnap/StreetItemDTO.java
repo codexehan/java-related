@@ -1,7 +1,7 @@
-package deja.fashion.datapipeline.dto.streetsnap;
+package codexe.han.kafkadatapipeline.dto.streetsnap;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import deja.fashion.datapipeline.dto.DataBaseDTO;
+import codexe.han.kafkadatapipeline.dto.DataBaseDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

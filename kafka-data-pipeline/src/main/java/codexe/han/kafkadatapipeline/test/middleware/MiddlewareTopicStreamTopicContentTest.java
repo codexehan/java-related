@@ -1,7 +1,7 @@
-package deja.fashion.datapipeline.test.middleware;
+package codexe.han.kafkadatapipeline.test.middleware;
 
-import deja.fashion.datapipeline.common.Constants;
-import deja.fashion.datapipeline.common.DejaUtils;
+import codexe.han.kafkadatapipeline.common.Constants;
+import codexe.han.kafkadatapipeline.common.DejaUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.ConsumerRecord;

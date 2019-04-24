@@ -1,4 +1,4 @@
-package deja.fashion.datapipeline.dto;
+package codexe.han.kafkadatapipeline.dto;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
