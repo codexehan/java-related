@@ -18,8 +18,8 @@ import java.util.*;
 public class MiddlewareTopicStreamTopicContentTest {
     public static void main(String[] args) {
     //    String bootstrapServer = "172.28.10.59:9090,172.28.10.59:9091,172.28.10.59:9092";
-     //   String bootstrapServer = "172.28.2.22:9090,172.28.2.22:9091,172.28.2.22:9092";
-        String bootstrapServer = "10.60.7.119:9092,10.60.7.119:9091,10.60.7.119:9090";
+        String bootstrapServer = "172.28.2.22:9090,172.28.2.22:9091,172.28.2.22:9092";
+     //   String bootstrapServer = "10.60.7.119:9092,10.60.7.119:9091,10.60.7.119:9090";
 
         String ip = "172.28.10.59";
         int port = 9200;
@@ -41,6 +41,7 @@ public class MiddlewareTopicStreamTopicContentTest {
         Properties props = new Properties();
         props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServer);
         props.put(ConsumerConfig.GROUP_ID_CONFIG, groupId);
+        props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
         KafkaConsumer consumer = new KafkaConsumer(props, new LongDeserializer(), new StringDeserializer());
    //     consumer.subscribe(Arrays.asList(topic));
 
@@ -49,7 +50,7 @@ public class MiddlewareTopicStreamTopicContentTest {
         Collection<TopicPartition> topicPartitionCollection = new ArrayList<>();
         topicPartitionCollection.add(new TopicPartition(topic, 0));
         consumer.assign(topicPartitionCollection);
-        consumer.seek(new TopicPartition(topic, 0),27477057);//24479813
+        consumer.seek(new TopicPartition(topic, 0),0);//24479813
 
         int size = 0;
         log.info("---------------Consume Product Price Start------------------");

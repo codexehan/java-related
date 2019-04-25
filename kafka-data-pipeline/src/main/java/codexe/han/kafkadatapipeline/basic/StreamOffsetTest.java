@@ -1,6 +1,7 @@
 package codexe.han.kafkadatapipeline.basic;
 
 import codexe.han.kafkadatapipeline.basic.producer.DejaKafkaProducer;
+import codexe.han.kafkadatapipeline.common.Constants;
 import codexe.han.kafkadatapipeline.dto.product.ProductDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
@@ -15,6 +16,9 @@ import org.apache.kafka.streams.StreamsConfig;
 import org.apache.kafka.streams.kstream.Consumed;
 import org.apache.kafka.streams.kstream.KTable;
 import org.apache.kafka.streams.kstream.Produced;
+import org.apache.kafka.streams.state.KeyValueStore;
+import org.apache.kafka.streams.state.StoreBuilder;
+import org.apache.kafka.streams.state.Stores;
 
 import java.io.IOException;
 import java.time.Duration;
@@ -27,6 +31,36 @@ import java.util.UUID;
  * 这样就会触发stream对应的ConsumerConfig.AUTO_OFFSET_RESET_CONFIG设置，默认是earliest(正常consumer是latest)
  * 所以会造成很大的数据重复消费
  * 但是如果设置成latest，就需要考虑消息丢失的可能
+ *
+ * 源码解析：
+ * 【change_log offset存在客户端本地】
+ * change_log的topic消费，offset是记录在客户端本地的
+ * OffsetCheckpoint 管理topic[change_log] partition offset 读写到一个文件当中就是.checkpoint, topic的名字就是change_log
+ * 这个文件位于客户端，state.dir(默认值 /tmp/kafka-streams, confluence 上面写的是位于/var/lib/kafka-streams)规定的路径下面
+ * 查看该文件内容 strings kafka-streams/[star*]/[star*]/.checkpoint
+ *
+ * 先初始化consumer
+ * 然后开始streaming
+ * org.apache.kafka.clients.consumer.internals.ConsumerCoordinator 负责初始化consumer offset
+ * offset存储在内部topic __consumer_offsets上面 有50个partition
+ * offset reset
+ * OffsetResetStrategy 保存默认offset strategy
+ *
+ * KafkaConsumer.poll中调用过程 -> timeout的意思是，如果有结果会立刻返回，如果没有结果，会block一段时间知道timeout
+ * Fetcher.parseCompletedFetch 会对响应进行判断，如果broker 返回 offset有错，就会调用默认reset策略
+ * KafkaConsumer.updateAssignmentMetadataIfNeeded检测是否需要reset offset 需要的话 会根据策略earlist 或者 latest
+ * reset 会调用Fetcher.resetOffsetsIfNeeded->Fetcher.resetOffsetsAsync->Fetcher.sendListOffsetRequest 获取某个partition的offset
+ *  private Long offsetResetStrategyTimestamp(final TopicPartition partition) {
+ *         OffsetResetStrategy strategy = subscriptions.resetStrategy(partition);
+ *         if (strategy == OffsetResetStrategy.EARLIEST)
+ *             return ListOffsetRequest.EARLIEST_TIMESTAMP;//-2
+ *         else if (strategy == OffsetResetStrategy.LATEST)
+ *             return ListOffsetRequest.LATEST_TIMESTAMP;//-1
+ *         else
+ *             return null;
+ *     }
+ * Fetcher.sendListOffsetRequest根据timestamp请求offset,如果是earliest策略,就是-2;latest就是-1
+ * Fetcher根据offset从broker进行消费
  */
 @Slf4j
 public class StreamOffsetTest {
@@ -38,8 +72,8 @@ public class StreamOffsetTest {
     public static final String bootstrapServers = "172.28.2.22:9090,172.28.2.22:9091,172.28.2.22:9092";
 
     public static void main(String[] args){
-        joinStream();
-     //   singleStream();
+      //  joinStream();
+        singleStream();
     }
 
     public static void singleStream(){
@@ -47,10 +81,20 @@ public class StreamOffsetTest {
         props.put(StreamsConfig.APPLICATION_ID_CONFIG, "joinStream_2");
         props.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
         props.put(StreamsConfig.DEFAULT_DESERIALIZATION_EXCEPTION_HANDLER_CLASS_CONFIG, "org.apache.kafka.streams.errors.LogAndContinueExceptionHandler");
+        props.put(StreamsConfig.STATE_DIR_CONFIG, "/tmp/kafka-streams");
   //      props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
 
         //build topology
         StreamsBuilder streamsBuilder = new StreamsBuilder();
+
+        // create store
+        StoreBuilder<KeyValueStore<String,String>> keyValueStoreBuilder =
+                Stores.keyValueStoreBuilder(Stores.persistentKeyValueStore("joinStream_2_state_store"), Serdes.String(), Serdes.String());
+       /* StoreBuilder<KeyValueStore<Long,String>> keyValueStoreBuilder =
+                Stores.keyValueStoreBuilder(Stores.inMemoryKeyValueStore(Constants.LOCAL_STORE_PRODUCT_PURCHASABLE_STATUS_CHANGE), Serdes.Long(), Serdes.String());*/
+        // register store
+        streamsBuilder.addStateStore(keyValueStoreBuilder);
+
         KTable<String, String> productValidateTable = streamsBuilder.table(topic1, Consumed.with(Serdes.String(), Serdes.String()));
         productValidateTable.toStream().to(topic3, Produced.with(Serdes.String(), Serdes.String()));
         KafkaStreams stream = new KafkaStreams(streamsBuilder.build(), props);
