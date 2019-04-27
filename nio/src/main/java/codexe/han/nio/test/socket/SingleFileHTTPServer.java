@@ -2,7 +2,6 @@ package codexe.han.nio.test.socket;
 
 import lombok.extern.slf4j.Slf4j;
 
-import javax.xml.ws.spi.http.HttpHandler;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -43,7 +42,7 @@ public class SingleFileHTTPServer {
 
     public void start(){
         ExecutorService pool = Executors.newFixedThreadPool(100);
-        try(ServerSocket server = new ServerSocket(this.port)) {
+        try(ServerSocket server = new ServerSocket(this.port)) { ;
             log.info("Accepting connections on port {}",server.getLocalPort());
             log.info("Data to be sent: {}", new String(this.content, encoding));
 

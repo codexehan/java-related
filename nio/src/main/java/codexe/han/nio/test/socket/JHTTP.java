@@ -4,9 +4,7 @@ import io.micrometer.core.instrument.util.StringUtils;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.*;
-import java.net.ServerSocket;
-import java.net.Socket;
-import java.net.URLConnection;
+import java.net.*;
 import java.nio.file.Files;
 import java.util.Date;
 import java.util.concurrent.ExecutorService;
@@ -51,6 +49,7 @@ public class JHTTP {
 
     public static void main(String[] args) {
         File docroot = new File("/Users/zhenchao/Documents/IdeaProjects/java-related/nio/src/main/resources");
+        //File docroot = new File("/Users/mozat/Documents/IdeaProjects/java-related/nio/src/main/resources");
 
         //设置要监听的端口
         int port = 12000;
@@ -94,7 +93,7 @@ class RequestProcessor implements Runnable{
         try{
             OutputStream raw = new BufferedOutputStream(connection.getOutputStream());
             Writer out = new OutputStreamWriter(raw);
-            Reader in = new InputStreamReader(new BufferedInputStream(connection.getInputStream()),"US-ASCII");
+            Reader in = new InputStreamReader(new BufferedInputStream(connection.getInputStream()),"US-ASCII");//US-ASCII
 
             StringBuilder requestLine = new StringBuilder();
             while(true){
@@ -106,6 +105,7 @@ class RequestProcessor implements Runnable{
             }
 
             String get = requestLine.toString();
+            log.info("get request is {}",get);
 
             if(!StringUtils.isEmpty(get)) {
                 log.info("get request is {}", get);
@@ -139,6 +139,7 @@ class RequestProcessor implements Runnable{
                     raw.flush();
                 }
                 else{//没有找到文件
+                    log.info("404");
                     String body = new StringBuilder("<HTML>\r\n")
                             .append("<HEAD><TITLE>File NOT FOUND</TITLE>")
                             .append("</HEAD>\r\n")
@@ -153,6 +154,7 @@ class RequestProcessor implements Runnable{
                 }
             }
             else{//Get 以外的其他方法
+                log.info("501");
                 String body = new StringBuilder("<HTML>\r\n")
                         .append("<HEAD><TITLE>Not Implemented</TITLE>\r\n")
                         .append("</HEAD>\r\n")
@@ -187,5 +189,33 @@ class RequestProcessor implements Runnable{
         out.write("Content-type: "+contentType+"\r\n");
         out.flush();
     }
+}
+
+class SendGetRequest{
+    public static void send(){
+        try{
+            URL url = new URL("http://192.168.1.118:12000");
+
+       //     HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+       //     urlConnection.connect();
+
+        //    InputStream in = urlConnection.getInputStream();
+            URLConnection u = url.openConnection();
+            u.setRequestProperty("","HTTP ");
+            u.connect();
+            InputStream in = u.getInputStream();
+            //添加BufferedInputStream, Reader阅读器
+            int c;
+            while((c=in.read())!=-1) System.out.write(c);
+            in.close();
+        }catch(IOException e){
+            e.printStackTrace();
+        }
+    }
+
+    public static void main(String[] args) {
+        send();
+    }
+
 }
 
