@@ -1,10 +1,12 @@
 package codexe.han.spring.aop.dynamicproxy.jdkdynamic;
 
+import codexe.han.spring.aop.staticproxy.RrealStar;
 import codexe.han.spring.aop.staticproxy.Star;
 
 import java.lang.reflect.Proxy;
 
 /**
+ * JDK动态代理只能代理实现了接口的类
  * Proxy.newProxyInstance()方法，接收三个参数：
  * 第一个参数指定当前目标对象使用的类加载器
  * 第二个参数指定目标对象实现的接口的类型
@@ -37,4 +39,18 @@ public class JdkProxyHandler {
                     return object;
                 });
     }
+}
+
+class Client{
+
+    public static void main(String[] args) {
+        Star realStar = new RrealStar();
+
+        Star proxy = (Star) new JdkProxyHandler(realStar).getProxyInstance();
+
+        proxy.sing();
+
+        proxy.test();
+    }
+
 }

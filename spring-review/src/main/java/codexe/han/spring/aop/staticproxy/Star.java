@@ -5,4 +5,6 @@ package codexe.han.spring.aop.staticproxy;
  */
 public interface Star {
     void sing();
+
+    void test();
 }

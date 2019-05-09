@@ -18,4 +18,9 @@ public class ProxyStar implements Star {
         this.star.sing();
         System.out.println("演出完毕，代理收拾");
     }
+
+    @Override
+    public void test() {
+
+    }
 }
