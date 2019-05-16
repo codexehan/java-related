@@ -19,6 +19,7 @@ public class escape21 {
                 p.next = new ListNode(p2.val);
                 p2 = p2.next;
             }
+            p = p.next;
         }
         /*if(p1!=null){
             p.next = p1;
