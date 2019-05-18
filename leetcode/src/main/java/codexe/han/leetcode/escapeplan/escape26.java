@@ -13,5 +13,4 @@ public class escape26 {
         }
         return n;
     }
-
 }
