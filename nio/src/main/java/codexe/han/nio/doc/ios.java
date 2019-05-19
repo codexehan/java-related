@@ -8,7 +8,7 @@ package codexe.han.nio.doc;
  * 非阻塞io模型
  * 不出让cpu，while循环中不断地询问内核数据是否就绪，
  *
- * 多路复用io模型
+ * 多路复用io模型 java 当中的nio
  * 一个线程不断地轮询多个socket状态，只有socket真的有读写事件的时候，才调用io操作
  * 适合连接数比较多的情况
  *
