@@ -3,7 +3,10 @@ package codexe.han.leetcode.escapeplan;
 import java.util.ArrayList;
 import java.util.List;
 
-//TODO: TEST
+/**
+ * 一个循环应该是right down left top
+ * 新的循环从头开始
+ */
 public class escape54 {
     public List<Integer> spiralOrder(int[][] matrix){
         int m = matrix.length;
@@ -13,30 +16,39 @@ public class escape54 {
         getResult(res, matrix, 0,0,visited);
         return res;
     }
+
+    /**
+     * 递归的方式做是错误的，因为对于最下层的
+     * @param res
+     * @param matrix
+     * @param currenti
+     * @param currentj
+     * @param visited
+     */
     public void getResult(List<Integer> res, int[][] matrix, int currenti, int currentj, boolean[][] visited){
         //right->down->left->top
         //right
-        if(currentj<matrix[0].length && !visited[currenti][currentj+1]){
-            res.add(matrix[currenti][currentj]+1);
-            visited[currenti][currentj+1] = true;
+        if(currentj<matrix[0].length && currentj>=0  && currenti>=0 && currenti<matrix.length && !visited[currenti][currentj]){
+            res.add(matrix[currenti][currentj]);
+            visited[currenti][currentj] = true;
             getResult(res, matrix, currenti, currentj+1, visited);
         }
         //down
-        if(currenti<matrix.length && !visited[currenti+1][currentj]){
-            res.add(matrix[currenti+1][currentj]);
-            visited[currenti+1][currentj] = true;
+        if(currentj<matrix[0].length && currentj>=0  && currenti>=0 && currenti<matrix.length  && !visited[currenti][currentj]){
+            res.add(matrix[currenti][currentj]);
+            visited[currenti][currentj] = true;
             getResult(res, matrix, currenti+1, currentj, visited);
         }
         //left
-        if(currentj>=0 && !visited[currenti][currentj-1]){
-            res.add(matrix[currenti][currentj-1]);
-            visited[currenti][currentj-1] = true;
+        if(currentj<matrix[0].length && currentj>=0  && currenti>=0 && currenti<matrix.length  && !visited[currenti][currentj]){
+            res.add(matrix[currenti][currentj]);
+            visited[currenti][currentj] = true;
             getResult(res, matrix, currenti, currentj-1, visited);
         }
         //top
-        if(currenti>=0 && !visited[currenti-1][currentj]){
-            res.add(matrix[currenti-1][currentj]);
-            visited[currenti-1][currentj] = true;
+        if(currentj<matrix[0].length && currentj>=0  && currenti>=0 && currenti<matrix.length && !visited[currenti][currentj]){
+            res.add(matrix[currenti][currentj]);
+            visited[currenti][currentj] = true;
             getResult(res, matrix, currenti-1, currentj, visited);
         }
     }
