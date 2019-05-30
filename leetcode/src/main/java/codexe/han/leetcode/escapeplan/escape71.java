@@ -6,6 +6,7 @@ import java.util.LinkedList;
 /**
  * 根据'/'提取
  */
+//TODO:Test
 public class escape71 {
     public static void main(String[] args) {
         String p = "//home////ss/";
@@ -20,11 +21,19 @@ public class escape71 {
         for(int i=0;i<path.length();i++){
             if(path.charAt(i)=='/'){
                 String folder = path.substring(j,i);
-                if(folder.equals(".")) continue;
-                if(folder.equals("..")) stack.pop();
-
+                if(folder.isEmpty()||folder.equals(".")) continue;
+                if(folder.equals("..")){
+                    stack.pollLast();
+                }
+                else{
+                    stack.addLast("/"+folder);
+                }
             }
         }
-        return "";
+        StringBuilder res = new StringBuilder();
+        for(String r : stack){
+            res.append(r);
+        }
+        return res.toString();
     }
 }
