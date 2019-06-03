@@ -17,7 +17,10 @@ public class TestRedis {
         System.out.println(value);*/
 
         Jedis jedis = new Jedis("localhost");
-        jedis.set("1","test1");
+//        jedis.set("1","test1");
         System.out.println(jedis.get("1"));
+
+        System.out.println(jedis.keys("*"));
+        System.out.println(jedis.hgetAll("Student:1"));
     }
 }
