@@ -12,18 +12,21 @@ public class escape75 {
     public void sortColors(int[] nums){
         int i=0, left=0, right=nums.length-1;
 
-        if(nums[i]==0){
-            nums[left] = 0;
-            nums[i] = 1;
-            left++;
-        }
-        else if(nums[i]==2){
-            nums[right] = 2;
-            nums[i] = 1;
-            right--；
-        }
-        else{
+        while(i<=right) {
+            if (nums[i] == 0) {
+                swap(i, left, nums);
+                left++;
+            } else if (nums[i] == 2) {
+                swap(i, right, nums);
+                right--;
+            }
             i++;
         }
+
+    }
+    public void swap(int i, int j, int[] nums){
+        int tmp = nums[i];
+        nums[i] = nums[j];
+        nums[j] = tmp;
     }
 }
