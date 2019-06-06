@@ -11,13 +11,18 @@ import java.util.List;
  */
 public class escape78 {
     public List<List<Integer>> subsets(int[] nums){
-
+        List<List<Integer>> res = new ArrayList<>();
+        res.add(new ArrayList<>());
+        backtracking(res,new ArrayList<>(),nums,0);
+        return res;
     }
 
     public void backtracking(List<List<Integer>> res, List<Integer> tmp, int[] nums, int start){
-        res.addAll(Arrays.asList(tmp));
-        for(;start<nums.length-1; start++){
-            tmp.
+        for(;start<nums.length; start++){
+            tmp.add(nums[start]);
+            res.add(new ArrayList<>(tmp));
+            backtracking(res,tmp,nums,start+1);
+            tmp.remove(tmp.size()-1);
         }
     }
 }
