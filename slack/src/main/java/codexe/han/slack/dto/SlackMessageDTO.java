@@ -14,6 +14,9 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+/**
+ * This is a slack attachments part
+ */
 public class SlackMessageDTO {
     @JsonProperty("pretext")
     private String pretext;
@@ -32,10 +35,20 @@ public class SlackMessageDTO {
     @JsonProperty("fields")
     private List<SlackDetailMessageDTO> slackDetailList;
 
+    @JsonProperty("actions")
+    private List<SlackActionDTO> slackActionList;
+
     public void addSlackDetail(SlackDetailMessageDTO dto){
         if(slackDetailList == null){
             slackDetailList = new ArrayList<>();
         }
         slackDetailList.add(dto);
+    }
+
+    public void addSlackAction(SlackActionDTO dto){
+        if(slackActionList == null){
+            slackActionList = new ArrayList<>();
+        }
+        slackActionList.add(dto);
     }
 }

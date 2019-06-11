@@ -1,6 +1,7 @@
 package codexe.han.slack.client;
 
 
+import codexe.han.slack.dto.SlackActionDTO;
 import codexe.han.slack.dto.SlackDetailMessageDTO;
 import codexe.han.slack.dto.SlackMessageDTO;
 import codexe.han.slack.utils.JsonUtils;
@@ -16,7 +17,7 @@ import java.util.Map;
 
 public class SendSlackClient {
 
-    private final static String slackWebookUrl = "";
+    private final static String slackWebookUrl = "https://hooks.slack.com/services/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";
 
     private static HttpURLConnection getConnection() throws IOException {
         URL url = new URL(slackWebookUrl);
@@ -52,6 +53,7 @@ public class SendSlackClient {
                 .messageUrl(slackWebookUrl)
                 .build();
         slackMessageDTO.addSlackDetail(SlackDetailMessageDTO.builder().title("QUERY: "+"test").value("NUM: "+3).build());
+        slackMessageDTO.addSlackAction(SlackActionDTO.builder().type("button").text("button action").url("www.google.com").build());
         try {
             sendMsgToSlack(slackMessageDTO);
         } catch (IOException e) {
@@ -59,3 +61,5 @@ public class SendSlackClient {
         }
     }
 }
+
+
