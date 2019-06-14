@@ -52,7 +52,8 @@ public class SendSlackClient {
                 .color("danger")
                 .messageUrl(slackWebookUrl)
                 .build();
-        slackMessageDTO.addSlackDetail(SlackDetailMessageDTO.builder().title("QUERY: "+"test").value("NUM: "+3).build());
+        slackMessageDTO.addSlackDetail(SlackDetailMessageDTO.builder().title("QUERY: "+"test").value(3+"\n"+"<http://www.google.com|Go to DI Dashboard>").build());
+        //slackMessageDTO.addSlackDetail(SlackDetailMessageDTO.builder().title("QUERY: "+"test").value("NUM: "+3).build());
         slackMessageDTO.addSlackAction(SlackActionDTO.builder().type("button").text("button action").url("www.google.com").build());
         try {
             sendMsgToSlack(slackMessageDTO);
