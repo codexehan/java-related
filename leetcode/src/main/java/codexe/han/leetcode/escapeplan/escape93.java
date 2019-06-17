@@ -15,33 +15,44 @@ import java.util.List;
  * 000连续的0的存在情况？  不要计算0开头的情况
  */
 public class escape93 {
-    public List<String> restoreIpAddresses(String s) {
+    public static void main(String[] args) {
+        restoreIpAddresses("1111");
+    }
+    public static List<String> restoreIpAddresses(String s) {
         List<String> finalRes = new ArrayList<>();
         StringBuilder res = new StringBuilder();
         backtracking(finalRes, res, s, 1,0);
         return finalRes;
     }
-    public void backtracking(List<String> finalRes, StringBuilder res, String s, int level, int start){
+    public static void backtracking(List<String> finalRes, StringBuilder res, String s, int level, int start){
 
-        if(level == 4 && start ==s.length()) finalRes.add(res.toString());
+        if(level == 5 && start ==s.length()) {
+            finalRes.add(res.toString());
+        }
 
-        if(level<4) {
+        if(level<=4) {
             if(start<s.length()) {
                 res.append(s, start, start + 1);
+                if(level!=4)res.append(".");
                 backtracking(finalRes, res, s, level + 1, start + 1);
-                res.delete(res.length() - 1, res.length() + 1);
+                if(level!=4) res.delete(res.length() - 2, res.length());
+                else res.delete(res.length() - 1, res.length());
             }
 
             if(start<s.length()-1 && s.charAt(start)!='0') {
                 res.append(s, start, start + 2);
+                if(level!=4)res.append(".");
                 backtracking(finalRes, res, s, level + 1, start + 2);
-                res.delete(res.length() - 1, res.length() + 2);
+                if(level!=4) res.delete(res.length() - 3, res.length());
+                else res.delete(res.length() - 2, res.length());
             }
 
             if (start<s.length()-2 && s.charAt(start)!='0' && Integer.valueOf(s.substring(start, start + 3)) <= 255) {
                 res.append(s, start, start + 3);
+                if(level!=4)res.append(".");
                 backtracking(finalRes, res, s, level + 1, start + 3);
-                res.delete(res.length() - 1, res.length() + 3);
+                if(level!=4) res.delete(res.length() - 4, res.length());
+                else res.delete(res.length() - 3, res.length());
             }
         }
     }

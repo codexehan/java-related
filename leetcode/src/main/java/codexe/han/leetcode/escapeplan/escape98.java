@@ -6,9 +6,10 @@ package codexe.han.leetcode.escapeplan;
  * 由下往上做的问题在于，每次返回高度，需要确定该子书是左子树还是右子树,知道该使用maxLeft 还是 minRight
  */
 public class escape98 {
-    boolean valid = true;
     public boolean isValidBST(TreeNode root) {
-        return check(root, Integer.MAX_VALUE, Integer.MIN_VALUE);
+        //root node.val为Integer.MAX_VALUE 或者 Integer.MIN_VALUE
+        //所以要讲Integer.MAX_VALUE Integer.MIN_VALUE替换为Long
+        return check(root, Long.MAX_VALUE, Long.MIN_VALUE);
     }
 
     /**
@@ -40,7 +41,7 @@ public class escape98 {
     }
 
 
-    public boolean check(TreeNode node, int max, int min){
+    public boolean check(TreeNode node, long max, long min){
         if(node == null) return true;
         if(node.val<=min || node.val>=max) return false;//如果有不符合条件的情况，就提前退出运算即可
         return check(node.left, node.val, min) && check(node.right, max, node.val);

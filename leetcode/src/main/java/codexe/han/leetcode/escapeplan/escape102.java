@@ -10,21 +10,24 @@ import java.util.List;
 public class escape102 {
     public List<List<Integer>> levelOrder(TreeNode root) {
         LinkedList<TreeNode> queue = new LinkedList<>();
+        if(root==null) return new ArrayList<>();//空节点
         queue.add(root);
         List<List<Integer>> res = new ArrayList<>();
         breadFirstTravel(queue, res);
         return res;
     }
     public void breadFirstTravel(LinkedList<TreeNode> queue, List<List<Integer>> res){
-        LinkedList<TreeNode> queueTmp = new LinkedList<>();
-        List<Integer> resTmp = new ArrayList<>();
-        for(TreeNode nodeTmp : queue){
-            if(nodeTmp.left!=null) queueTmp.add(nodeTmp.left);
-            if(nodeTmp.right!=null) queueTmp.add(nodeTmp.right);
-            resTmp.add(nodeTmp.val);
+        if(!queue.isEmpty()) {
+            LinkedList<TreeNode> queueTmp = new LinkedList<>();
+            List<Integer> resTmp = new ArrayList<>();
+            for (TreeNode nodeTmp : queue) {
+                if (nodeTmp.left != null) queueTmp.add(nodeTmp.left);
+                if (nodeTmp.right != null) queueTmp.add(nodeTmp.right);
+                resTmp.add(nodeTmp.val);
+            }
+            res.add(resTmp);
+            breadFirstTravel(queueTmp, res);
         }
-        res.add(resTmp);
-        breadFirstTravel(queueTmp, res);
     }
     class TreeNode {
         int val;
