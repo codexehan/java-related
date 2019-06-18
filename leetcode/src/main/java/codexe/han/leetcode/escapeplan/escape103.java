@@ -6,20 +6,37 @@ import java.util.List;
 
 public class escape103 {
     public List<List<Integer>> zigzagLevelOrder(TreeNode root) {
-        LinkedList<TreeNode> queue = new LinkedList<>();
-        queue.add(root);
         List<List<Integer>> res = new ArrayList<>();
-        breadFirstTravel(queue, res, 0);
-        return null;
+        if(root==null) return res;
+        deepFirstTravel(root, 0, res);
+        return res;
     }
-    public void breadFirstTravel(LinkedList<TreeNode> queue, List<List<Integer>> res, int direction){
+
+    public void deepFirstTravel(TreeNode node, int level, List<List<Integer>> res){
+        if(level>=res.size()){
+            res.add(new ArrayList<>());
+        }
+        if(level%2==0) {
+            res.get(level).add(node.val);
+        }
+        else{
+            res.get(level).add(0,node.val);
+        }
+        if(node.left!=null) deepFirstTravel(node.left, level+1, res);
+        if(node.right!=null) deepFirstTravel(node.right, level+1, res);
+    }
+
+    /**
+     * 广度优先遍历太复杂了
+     */
+    /*public void breadFirstTravel(LinkedList<TreeNode> queue, List<List<Integer>> res, int direction){
         if(!queue.isEmpty()) {
             LinkedList<TreeNode> queueTmp = new LinkedList<>();
             List<Integer> resTmp = new ArrayList<>();
             TreeNode nodeTmp;
             while (!queue.isEmpty()) {
-                /*if(direction%2==0) nodeTmp = queue.pollLast();
-                else nodeTmp = queue.pollFirst();*/
+                *//*if(direction%2==0) nodeTmp = queue.pollLast();
+                else nodeTmp = queue.pollFirst();*//*
                 nodeTmp = queue.pollFirst();
                 if(direction%2==0){
                     queueTmp.addFirst(nodeTmp.left);
@@ -34,7 +51,8 @@ public class escape103 {
             res.add(resTmp);
             breadFirstTravel(queueTmp, res, direction+1);
         }
-    }
+    }*/
+
     class TreeNode {
         int val;
         TreeNode left;

@@ -96,4 +96,38 @@ public class TestRedis {
         log.info("1 2 并集是 {}",jedis.sunion("set-key","set-key2"));
         //jedis.sunionstore()
     }
+
+    public static void HashOperation(Jedis jedis){
+        /**
+         批量获取 批量写入
+         jedis.hmget()
+         jedis.hmset()
+
+         jedis.hincrby("hash-key", "key-name")//+1
+         */
+    }
+
+    public static void ZSetOperation(Jedis jedis){
+
+        /**
+         jedis.zadd()
+         jedis.zcard() 获取集合大小
+         zincrby  分值加1
+         zcount 返回分数介于min max之间的数值
+         zrank 返回排名
+         zscore 返回分数
+         zrange 返回排名介于start和stop之间的member
+
+         zrevrank 从大到小排名
+         zrevrange 排名范围，从大到小返回
+         zrangebyscore  按照分数排序，取某个分数区间的成员
+         zremrangebyrank
+         zremrangebyscore
+
+
+         zinterstore
+         zuninstore
+         可以传入聚合函数，按照min,sum,max来进行选择
+         */
+    }
 }

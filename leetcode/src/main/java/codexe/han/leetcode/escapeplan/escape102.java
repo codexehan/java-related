@@ -31,10 +31,12 @@ public class escape102 {
     }
 
     public void deepFirstTravel(TreeNode node, int level, List<List<Integer>> res){
-        if(level>res.size()){
+        if(level>=res.size()){
             res.add(new ArrayList<>());
         }
-        res.get(level).add();
+        res.get(level).add(node.val);
+        if(node.left!=null) deepFirstTravel(node.left, level+1, res);
+        if(node.right!=null) deepFirstTravel(node.right, level+1, res);
     }
     class TreeNode {
         int val;
