@@ -29,6 +29,13 @@ public class escape102 {
             breadFirstTravel(queueTmp, res);
         }
     }
+
+    public void deepFirstTravel(TreeNode node, int level, List<List<Integer>> res){
+        if(level>res.size()){
+            res.add(new ArrayList<>());
+        }
+        res.get(level).add();
+    }
     class TreeNode {
         int val;
         TreeNode left;
