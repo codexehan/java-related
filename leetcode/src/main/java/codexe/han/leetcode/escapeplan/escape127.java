@@ -6,7 +6,12 @@ import java.util.Set;
 
 public class escape127 {
     public int ladderLength(String beginWord, String endWord, List<String> wordList) {
-
+        Set<String> pool = new HashSet<>(wordList);
+        Set<String> beginWords = new HashSet<>();
+        beginWords.add(beginWord);
+        Set<String> endWords = new HashSet<>();
+        endWords.add(endWord);
+        return dfs(beginWords, endWords, pool);
     }
     public int dfs(Set<String>beginWords, Set<String>endWords, Set<String> pool){
         if(beginWords.isEmpty()) return 0;
