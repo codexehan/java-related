@@ -12,11 +12,12 @@ public class escape106 {
         return build(postorder, postorder.length-1, 0, inorder.length-1);
     }
     public TreeNode build(int[] postorder, int rootIndex, int start, int end){
-        if(start>=end){
+        if(start<=end){
             TreeNode node = new TreeNode(postorder[rootIndex]);
             int index = inorderMap.get(node.val);
             node.right = build(postorder, rootIndex-1, index+1, end);
-            node.left = build(postorder, rootIndex-(end-index-1-1-1), start, index-1);
+        //    node.left = build(postorder, rootIndex-(end-index-1-1-1), start, index-1);
+            node.left = build(postorder, rootIndex-(end-index)-1, start, index-1);
             return node;
         }
         return null;

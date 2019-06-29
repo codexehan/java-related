@@ -7,7 +7,7 @@ public class escape105 {
     private Map<Integer, Integer> inorderMap = new HashMap<>();
     public TreeNode buildTree(int[] preorder, int[] inorder) {
         for(int i=0; i<inorder.length;i++){
-            inorderMap.put(i,inorder[i]);
+            inorderMap.put(inorder[i],i);
         }
         return build(preorder, 0,0,inorder.length-1);
     }
@@ -18,6 +18,7 @@ public class escape105 {
             TreeNode node = new TreeNode(val);
             int index = inorderMap.get(val);
             node.left = build(preorder, rootIndex + 1, start, index - 1);
+       //     node.right = build(preorder, rootIndex + (index-1 - start +1 +1), index + 1, end);
             node.right = build(preorder, rootIndex + (index-1 - start +1 +1), index + 1, end);
             return node;
         }

@@ -9,7 +9,7 @@ public class escape108 {
         return build(nums, 0, nums.length-1);
     }
     public TreeNode build(int[] nums, int left, int right){
-        while(left<=right){
+        if(left<=right){
             int mid = (left+right)/2;
             TreeNode node = new TreeNode(nums[mid]);
             node.left = build(nums, left, mid-1);
