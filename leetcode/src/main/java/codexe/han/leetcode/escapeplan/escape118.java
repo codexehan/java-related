@@ -14,6 +14,9 @@ public class escape118 {
         res.add(Arrays.asList(1,1));
         int n = 3;
         while(n++ <= numRows){
+            /**
+             * 不需要每次都创建新的tmp数组，可以直接使用一个 每次都从头覆盖，这样的话，因为新的数值肯定比上一次要多，不用担心重复
+             */
             List<Integer> tmp = new ArrayList<>();
             tmp.add(1);
             List<Integer> prev = res.get(res.size()-1);

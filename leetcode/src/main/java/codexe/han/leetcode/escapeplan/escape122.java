@@ -7,15 +7,15 @@ package codexe.han.leetcode.escapeplan;
  */
 public class escape122 {
     public int maxProfit(int[] prices) {
-        int localmin = prices[0];
-        int localmax = prices[0];
         int max = 0;
-        for(int i=1; i<prices.length;i++){
-            localmin = Math.min(localmin, prices[i]);
-            if(prices[i]>localmax) {
-                max += prices[i]-localmin;
-                localmin = prices[i];
-                localmax = prices[i];
+        if(prices.length!=0) {
+            int localmin = prices[0];
+            for (int i = 1; i < prices.length; i++) {
+                if (prices[i] > localmin) {
+                    max += prices[i] - localmin;
+                    localmin = prices[i];
+                }
+                localmin = Math.min(localmin, prices[i]);
             }
         }
         return max;
