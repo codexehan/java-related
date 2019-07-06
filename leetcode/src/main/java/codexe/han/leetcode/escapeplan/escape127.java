@@ -4,6 +4,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * TODO
+ */
 public class escape127 {
     public int ladderLength(String beginWord, String endWord, List<String> wordList) {
         Set<String> pool = new HashSet<>(wordList);
@@ -14,7 +17,7 @@ public class escape127 {
         return dfs(beginWords, endWords, pool);
     }
     public int dfs(Set<String>beginWords, Set<String>endWords, Set<String> pool){
-        if(beginWords.isEmpty()) return 0;
+        if(beginWords.isEmpty()||endWords.isEmpty()) return 0;
         pool.removeAll(beginWords);
         Set<String> newBeginWords = new HashSet<>();
         for(String beginWord : beginWords){

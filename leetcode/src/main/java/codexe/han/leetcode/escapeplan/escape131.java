@@ -27,7 +27,7 @@ public class escape131 {
             return;
         }
         for(int i=start; i<s.length(); i++){
-            if(isPalindrom(s,start,i+1)){
+            if(isPalindrom(s,start,i)){
                 res.add(s.substring(start, i+1));
                 backtracking(s,finalRes,res,i+1);
                 res.remove(res.size()-1);
@@ -37,7 +37,7 @@ public class escape131 {
 
     public boolean isPalindrom(String s, int start, int end){
         while(start<end){
-            if(s.charAt(start++)!=s.charAt(end++)) return false;
+            if(s.charAt(start++)!=s.charAt(end--)) return false;
         }
         return true;
     }
