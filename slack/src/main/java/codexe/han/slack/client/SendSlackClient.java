@@ -17,7 +17,7 @@ import java.util.Map;
 
 public class SendSlackClient {
 
-    private final static String slackWebookUrl = "https://hooks.slack.com/services/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";
+    private final static String slackWebookUrl = "";
 
     private static HttpURLConnection getConnection() throws IOException {
         URL url = new URL(slackWebookUrl);
