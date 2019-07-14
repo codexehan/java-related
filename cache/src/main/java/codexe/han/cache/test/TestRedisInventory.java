@@ -7,10 +7,11 @@ import java.util.concurrent.CyclicBarrier;
 
 public class TestRedisInventory {
     public static void main(String[] args) {
-        Jedis jedis = new Jedis("172.28.2.22",6379);
+
+
 
         String key = "product:inventory:1";
-        System.out.println(jedis.set(key,"10"));
+   //     System.out.println(jedis.set(key,"10"));
 
         int n=20;
         CyclicBarrier barrier = new CyclicBarrier(n);
@@ -18,8 +19,9 @@ public class TestRedisInventory {
             new Thread(()->{
                 System.out.println(Thread.currentThread().getName()+" ready");
                 try {
+                    Jedis jedis = new Jedis("localhost",6379);
                     barrier.await();
-                    long remain = jedis.incrBy(key,-1);
+                    long remain = jedis.decrBy(key,1);
                     System.out.println("remain "+remain);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
