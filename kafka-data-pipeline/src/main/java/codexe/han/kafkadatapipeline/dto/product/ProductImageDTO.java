@@ -2,7 +2,6 @@ package codexe.han.kafkadatapipeline.dto.product;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import jdk.nashorn.internal.runtime.logging.Logger;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

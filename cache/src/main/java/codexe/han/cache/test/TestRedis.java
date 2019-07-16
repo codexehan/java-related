@@ -27,7 +27,8 @@ public class TestRedis {
 
    //     StringOperation(jedis);
    //     ListOperation(jedis);
-        SetOperation(jedis);
+    //    SetOperation(jedis);
+        testExpire(jedis);
     }
     public static void StringOperation(Jedis jedis){
 
@@ -129,5 +130,19 @@ public class TestRedis {
          zuninstore
          可以传入聚合函数，按照min,sum,max来进行选择
          */
+    }
+
+    public static void testExpire(Jedis jedis) {
+        jedis.set("testexpire","1");
+        jedis.expire("testexpire",10);
+
+        for(int i =0 ;i<20;i++){
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            System.out.println(jedis.get("testexpire"));
+        }
     }
 }
