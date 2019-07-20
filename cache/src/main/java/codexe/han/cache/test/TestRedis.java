@@ -18,7 +18,7 @@ public class TestRedis {
         String value = String.valueOf(template.getConnectionFactory().getConnection().get("1".getBytes()));
         System.out.println(value);*/
 
-        Jedis jedis = new Jedis("localhost");
+        Jedis jedis = new Jedis("172.28.2.22");
 //        jedis.set("1","test1");
   //      System.out.println(jedis.get("1"));
 
@@ -28,7 +28,8 @@ public class TestRedis {
    //     StringOperation(jedis);
    //     ListOperation(jedis);
     //    SetOperation(jedis);
-        testExpire(jedis);
+    //    testExpire(jedis);
+        testExpireRepeat(jedis);
     }
     public static void StringOperation(Jedis jedis){
 
@@ -139,6 +140,21 @@ public class TestRedis {
         for(int i =0 ;i<20;i++){
             try {
                 Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            System.out.println(jedis.get("testexpire"));
+        }
+    }
+
+    public static void testExpireRepeat(Jedis jedis){
+        jedis.set("testexpire","1");
+        jedis.expire("testexpire",1);
+
+        for(int i =0 ;i<20;i++){
+            try {
+                Thread.sleep(500);
+                System.out.println("redis timeout "+jedis.expire("testexpire",1));
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
