@@ -1,0 +1,27 @@
+#the default discovery settings are unsuitable for production use;
+#at least one of [discovery.seed_hosts, discovery.seed_providers, cluster.initial_master_nodes] must be configured
+version: '3'
+services:
+  es04:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.2.0
+    container_name: es04
+    environment:
+      - "constraint:node==ip-10-60-6-116"
+      - node.name=es04
+      - discovery.seed_hosts=es02
+#      - cluster.initial_master_nodes=es01,es02
+      - cluster.name=docker-cluster
+#      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"  #es 内存  Xms初始堆大小
+ #   ulimits:
+ #     memlock:
+ #       soft: -1
+ #       hard: -1
+ #   volumes:
+#      - esdata01:/usr/share/elasticsearch/data
+#    ports:
+ #     - 9200:9200
+    networks:
+      - esnet
+networks:
+  esnet:
