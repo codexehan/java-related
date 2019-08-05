@@ -9,8 +9,9 @@ services:
     environment:
     - REDIS_REPLICATION_MODE=master
     - REDIS_PASSWORD=my_master_password
+    command: /run.sh --maxmemory 10gb
     volumes:
-    - '/path/to/redis-persistence:/bitnami'
+    - '/redis/redis-persistence:/bitnami'
 
   redis-replica:
     image: 'bitnami/redis:latest'
