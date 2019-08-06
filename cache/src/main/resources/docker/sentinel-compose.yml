@@ -14,6 +14,7 @@ services:
     environment:
     - ALLOW_EMPTY_PASSWORD=yes
     command: /run.sh --maxmemory 10gb
+    command: /run.sh --maxmemory-policy volatile-lru
     volumes:
     - /data/redis:/bitnami
     networks:
@@ -30,6 +31,7 @@ services:
     - REDIS_MASTER_HOST=redis-master
     - REDIS_MASTER_PORT_NUMBER=6379
     command: /run.sh --maxmemory 10gb
+    command: /run.sh --maxmemory-policy volatile-lru
     volumes:
     - /data/redis:/bitnami
     networks:

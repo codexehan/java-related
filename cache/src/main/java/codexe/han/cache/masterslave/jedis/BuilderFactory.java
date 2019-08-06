@@ -1,0 +1,579 @@
+package codexe.han.cache.masterslave.jedis;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import redis.clients.jedis.Builder;
+import redis.clients.jedis.GeoCoordinate;
+import redis.clients.jedis.GeoRadiusResponse;
+import redis.clients.jedis.Tuple;
+import redis.clients.jedis.util.JedisByteHashMap;
+import redis.clients.jedis.util.SafeEncoder;
+
+public final class BuilderFactory {
+  public static final redis.clients.jedis.Builder<Double> DOUBLE = new redis.clients.jedis.Builder<Double>() {
+    @Override
+    public Double build(Object data) {
+      String string = STRING.build(data);
+      if (string == null) return null;
+      try {
+        return Double.valueOf(string);
+      } catch (NumberFormatException e) {
+        if (string.equals("inf") || string.equals("+inf")) return Double.POSITIVE_INFINITY;
+        if (string.equals("-inf")) return Double.NEGATIVE_INFINITY;
+        throw e;
+      }
+    }
+
+    @Override
+    public String toString() {
+      return "double";
+    }
+  };
+  public static final redis.clients.jedis.Builder<Boolean> BOOLEAN = new redis.clients.jedis.Builder<Boolean>() {
+    @Override
+    public Boolean build(Object data) {
+      return ((Long) data) == 1;
+    }
+
+    @Override
+    public String toString() {
+      return "boolean";
+    }
+  };
+  public static final redis.clients.jedis.Builder<byte[]> BYTE_ARRAY = new redis.clients.jedis.Builder<byte[]>() {
+    @Override
+    public byte[] build(Object data) {
+      return ((byte[]) data); // deleted == 1
+    }
+
+    @Override
+    public String toString() {
+      return "byte[]";
+    }
+  };
+
+  public static final redis.clients.jedis.Builder<Long> LONG = new redis.clients.jedis.Builder<Long>() {
+    @Override
+    public Long build(Object data) {
+      return (Long) data;
+    }
+
+    @Override
+    public String toString() {
+      return "long";
+    }
+
+  };
+  public static final redis.clients.jedis.Builder<String> STRING = new redis.clients.jedis.Builder<String>() {
+    @Override
+    public String build(Object data) {
+      return data == null ? null : SafeEncoder.encode((byte[]) data);
+    }
+
+    @Override
+    public String toString() {
+      return "string";
+    }
+
+  };
+  public static final redis.clients.jedis.Builder<List<String>> STRING_LIST = new redis.clients.jedis.Builder<List<String>>() {
+    @Override
+    @SuppressWarnings("unchecked")
+    public List<String> build(Object data) {
+      if (null == data) {
+        return null;
+      }
+      List<byte[]> l = (List<byte[]>) data;
+      final ArrayList<String> result = new ArrayList<String>(l.size());
+      for (final byte[] barray : l) {
+        if (barray == null) {
+          result.add(null);
+        } else {
+          result.add(SafeEncoder.encode(barray));
+        }
+      }
+      return result;
+    }
+
+    @Override
+    public String toString() {
+      return "List<String>";
+    }
+
+  };
+  public static final redis.clients.jedis.Builder<Map<String, String>> STRING_MAP = new redis.clients.jedis.Builder<Map<String, String>>() {
+    @Override
+    @SuppressWarnings("unchecked")
+    public Map<String, String> build(Object data) {
+      final List<byte[]> flatHash = (List<byte[]>) data;
+      final Map<String, String> hash = new HashMap<String, String>(flatHash.size()/2, 1);
+      final Iterator<byte[]> iterator = flatHash.iterator();
+      while (iterator.hasNext()) {
+        hash.put(SafeEncoder.encode(iterator.next()), SafeEncoder.encode(iterator.next()));
+      }
+
+      return hash;
+    }
+
+    @Override
+    public String toString() {
+      return "Map<String, String>";
+    }
+
+  };
+
+  public static final redis.clients.jedis.Builder<Map<String, String>> PUBSUB_NUMSUB_MAP = new redis.clients.jedis.Builder<Map<String, String>>() {
+    @Override
+    @SuppressWarnings("unchecked")
+    public Map<String, String> build(Object data) {
+      final List<Object> flatHash = (List<Object>) data;
+      final Map<String, String> hash = new HashMap<String, String>(flatHash.size()/2, 1);
+      final Iterator<Object> iterator = flatHash.iterator();
+      while (iterator.hasNext()) {
+        hash.put(SafeEncoder.encode((byte[]) iterator.next()),
+          String.valueOf((Long) iterator.next()));
+      }
+
+      return hash;
+    }
+
+    @Override
+    public String toString() {
+      return "PUBSUB_NUMSUB_MAP<String, String>";
+    }
+
+  };
+
+  public static final redis.clients.jedis.Builder<Set<String>> STRING_SET = new redis.clients.jedis.Builder<Set<String>>() {
+    @Override
+    @SuppressWarnings("unchecked")
+    public Set<String> build(Object data) {
+      if (null == data) {
+        return null;
+      }
+      List<byte[]> l = (List<byte[]>) data;
+      final Set<String> result = new HashSet<String>(l.size(), 1);
+      for (final byte[] barray : l) {
+        if (barray == null) {
+          result.add(null);
+        } else {
+          result.add(SafeEncoder.encode(barray));
+        }
+      }
+      return result;
+    }
+
+    @Override
+    public String toString() {
+      return "Set<String>";
+    }
+
+  };
+
+  public static final redis.clients.jedis.Builder<List<byte[]>> BYTE_ARRAY_LIST = new redis.clients.jedis.Builder<List<byte[]>>() {
+    @Override
+    @SuppressWarnings("unchecked")
+    public List<byte[]> build(Object data) {
+      if (null == data) {
+        return null;
+      }
+      List<byte[]> l = (List<byte[]>) data;
+
+      return l;
+    }
+
+    @Override
+    public String toString() {
+      return "List<byte[]>";
+    }
+  };
+
+  public static final redis.clients.jedis.Builder<Set<byte[]>> BYTE_ARRAY_ZSET = new redis.clients.jedis.Builder<Set<byte[]>>() {
+    @Override
+    @SuppressWarnings("unchecked")
+    public Set<byte[]> build(Object data) {
+      if (null == data) {
+        return null;
+      }
+      List<byte[]> l = (List<byte[]>) data;
+      final Set<byte[]> result = new LinkedHashSet<byte[]>(l);
+      for (final byte[] barray : l) {
+        if (barray == null) {
+          result.add(null);
+        } else {
+          result.add(barray);
+        }
+      }
+      return result;
+    }
+
+    @Override
+    public String toString() {
+      return "ZSet<byte[]>";
+    }
+  };
+  public static final redis.clients.jedis.Builder<Map<byte[], byte[]>> BYTE_ARRAY_MAP = new redis.clients.jedis.Builder<Map<byte[], byte[]>>() {
+    @Override
+    @SuppressWarnings("unchecked")
+    public Map<byte[], byte[]> build(Object data) {
+      final List<byte[]> flatHash = (List<byte[]>) data;
+      final Map<byte[], byte[]> hash = new JedisByteHashMap();
+      final Iterator<byte[]> iterator = flatHash.iterator();
+      while (iterator.hasNext()) {
+        hash.put(iterator.next(), iterator.next());
+      }
+
+      return hash;
+    }
+
+    @Override
+    public String toString() {
+      return "Map<byte[], byte[]>";
+    }
+
+  };
+
+  public static final redis.clients.jedis.Builder<Set<String>> STRING_ZSET = new redis.clients.jedis.Builder<Set<String>>() {
+    @Override
+    @SuppressWarnings("unchecked")
+    public Set<String> build(Object data) {
+      if (null == data) {
+        return null;
+      }
+      List<byte[]> l = (List<byte[]>) data;
+      final Set<String> result = new LinkedHashSet<String>(l.size(), 1);
+      for (final byte[] barray : l) {
+        if (barray == null) {
+          result.add(null);
+        } else {
+          result.add(SafeEncoder.encode(barray));
+        }
+      }
+      return result;
+    }
+
+    @Override
+    public String toString() {
+      return "ZSet<String>";
+    }
+
+  };
+
+  public static final redis.clients.jedis.Builder<Set<redis.clients.jedis.Tuple>> TUPLE_ZSET = new redis.clients.jedis.Builder<Set<redis.clients.jedis.Tuple>>() {
+    @Override
+    @SuppressWarnings("unchecked")
+    public Set<redis.clients.jedis.Tuple> build(Object data) {
+      if (null == data) {
+        return null;
+      }
+      List<byte[]> l = (List<byte[]>) data;
+      final Set<redis.clients.jedis.Tuple> result = new LinkedHashSet<redis.clients.jedis.Tuple>(l.size()/2, 1);
+      Iterator<byte[]> iterator = l.iterator();
+      while (iterator.hasNext()) {
+        result.add(new Tuple(iterator.next(), DOUBLE.build(iterator.next())));
+      }
+      return result;
+    }
+
+    @Override
+    public String toString() {
+      return "ZSet<Tuple>";
+    }
+
+  };
+
+  public static final redis.clients.jedis.Builder<Object> EVAL_RESULT = new redis.clients.jedis.Builder<Object>() {
+
+    @Override
+    public Object build(Object data) {
+      return evalResult(data);
+    }
+
+    @Override
+    public String toString() {
+      return "Eval<Object>";
+    }
+
+    private Object evalResult(Object result) {
+      if (result instanceof byte[]) return SafeEncoder.encode((byte[]) result);
+
+      if (result instanceof List<?>) {
+        List<?> list = (List<?>) result;
+        List<Object> listResult = new ArrayList<Object>(list.size());
+        for (Object bin : list) {
+          listResult.add(evalResult(bin));
+        }
+
+        return listResult;
+      }
+
+      return result;
+    }
+
+  };
+
+  public static final redis.clients.jedis.Builder<Object> EVAL_BINARY_RESULT = new redis.clients.jedis.Builder<Object>() {
+
+    @Override
+    public Object build(Object data) {
+      return evalResult(data);
+    }
+
+    @Override
+    public String toString() {
+      return "Eval<Object>";
+    }
+
+    private Object evalResult(Object result) {
+      if (result instanceof List<?>) {
+        List<?> list = (List<?>) result;
+        List<Object> listResult = new ArrayList<Object>(list.size());
+        for (Object bin : list) {
+          listResult.add(evalResult(bin));
+        }
+
+        return listResult;
+      }
+
+      return result;
+    }
+
+  };
+
+  public static final redis.clients.jedis.Builder<List<redis.clients.jedis.GeoCoordinate>> GEO_COORDINATE_LIST = new redis.clients.jedis.Builder<List<redis.clients.jedis.GeoCoordinate>>() {
+    @Override
+    public List<redis.clients.jedis.GeoCoordinate> build(Object data) {
+      if (null == data) {
+        return null;
+      }
+      return interpretGeoposResult((List<Object>) data);
+    }
+
+    @Override
+    public String toString() {
+      return "List<GeoCoordinate>";
+    }
+
+    private List<redis.clients.jedis.GeoCoordinate> interpretGeoposResult(List<Object> responses) {
+      List<redis.clients.jedis.GeoCoordinate> responseCoordinate = new ArrayList<redis.clients.jedis.GeoCoordinate>(responses.size());
+      for (Object response : responses) {
+        if (response == null) {
+          responseCoordinate.add(null);
+        } else {
+          List<Object> respList = (List<Object>) response;
+          redis.clients.jedis.GeoCoordinate coord = new redis.clients.jedis.GeoCoordinate(DOUBLE.build(respList.get(0)),
+              DOUBLE.build(respList.get(1)));
+          responseCoordinate.add(coord);
+        }
+      }
+      return responseCoordinate;
+    }
+  };
+
+  public static final redis.clients.jedis.Builder<List<GeoRadiusResponse>> GEORADIUS_WITH_PARAMS_RESULT = new redis.clients.jedis.Builder<List<GeoRadiusResponse>>() {
+    @Override
+    public List<GeoRadiusResponse> build(Object data) {
+      if (data == null) {
+        return null;
+      }
+
+      List<Object> objectList = (List<Object>) data;
+
+      List<GeoRadiusResponse> responses = new ArrayList<GeoRadiusResponse>(objectList.size());
+      if (objectList.isEmpty()) {
+        return responses;
+      }
+
+      if (objectList.get(0) instanceof List<?>) {
+        // list of members with additional informations
+        GeoRadiusResponse resp;
+        for (Object obj : objectList) {
+          List<Object> informations = (List<Object>) obj;
+
+          resp = new GeoRadiusResponse((byte[]) informations.get(0));
+
+          int size = informations.size();
+          for (int idx = 1; idx < size; idx++) {
+            Object info = informations.get(idx);
+            if (info instanceof List<?>) {
+              // coordinate
+              List<Object> coord = (List<Object>) info;
+
+              resp.setCoordinate(new GeoCoordinate(DOUBLE.build(coord.get(0)),
+                  DOUBLE.build(coord.get(1))));
+            } else {
+              // distance
+              resp.setDistance(DOUBLE.build(info));
+            }
+          }
+
+          responses.add(resp);
+        }
+      } else {
+        // list of members
+        for (Object obj : objectList) {
+          responses.add(new GeoRadiusResponse((byte[]) obj));
+        }
+      }
+
+      return responses;
+    }
+
+    @Override
+    public String toString() {
+      return "GeoRadiusWithParamsResult";
+    }
+  };
+
+
+  public static final redis.clients.jedis.Builder<List<Module>> MODULE_LIST = new redis.clients.jedis.Builder<List<Module>>() {
+    @Override
+    public List<Module> build(Object data) {
+      if (data == null) {
+        return null;
+      }
+
+      List<List<Object>> objectList = (List<List<Object>>) data;
+
+      List<Module> responses = new ArrayList<Module>(objectList.size());
+      if (objectList.isEmpty()) {
+        return responses;
+      }
+
+      for (List<Object> moduleResp: objectList) {
+        Module m = new Module(SafeEncoder.encode((byte[]) moduleResp.get(1)), ((Long) moduleResp.get(3)).intValue());
+        responses.add(m);
+      }
+
+      return responses;
+    }
+
+    @Override
+    public String toString() {
+      return "List<Module>";
+    }
+  };
+
+  public static final redis.clients.jedis.Builder<List<Long>> LONG_LIST = new redis.clients.jedis.Builder<List<Long>>() {
+    @Override
+    @SuppressWarnings("unchecked")
+    public List<Long> build(Object data) {
+      if (null == data) {
+        return null;
+      }
+      return (List<Long>) data;
+    }
+
+    @Override
+    public String toString() {
+      return "List<Long>";
+    }
+
+  };
+
+  public static final redis.clients.jedis.Builder<StreamEntryID> STREAM_ENTRY_ID = new redis.clients.jedis.Builder<StreamEntryID>() {
+    @Override
+    @SuppressWarnings("unchecked")
+    public  StreamEntryID build(Object data) {
+      if (null == data) {
+        return null;
+      }
+      String id = SafeEncoder.encode((byte[])data);
+      return new StreamEntryID(id);
+    }
+
+    @Override
+    public String toString() {
+      return "StreamEntryID";
+    }
+  };
+  
+
+  public static final redis.clients.jedis.Builder<List<StreamEntry>> STREAM_ENTRY_LIST = new redis.clients.jedis.Builder<List<StreamEntry>>() {
+    @Override
+    @SuppressWarnings("unchecked")
+    public  List<StreamEntry> build(Object data) {
+      if (null == data) {
+        return null;
+      }
+      List<ArrayList<Object>> objectList = (List<ArrayList<Object>>) data;
+
+      List<StreamEntry> responses = new ArrayList<>(objectList.size()/2);
+      if (objectList.isEmpty()) {
+        return responses;
+      }
+
+      for(ArrayList<Object> res : objectList) {
+        String entryIdString = SafeEncoder.encode((byte[])res.get(0));
+        StreamEntryID entryID = new StreamEntryID(entryIdString);
+        List<byte[]> hash = (List<byte[]>)res.get(1);
+        
+        Iterator<byte[]> hashIterator = hash.iterator();
+        Map<String, String> map = new HashMap<>(hash.size()/2);
+        while(hashIterator.hasNext()) {
+          map.put(SafeEncoder.encode((byte[])hashIterator.next()), SafeEncoder.encode((byte[])hashIterator.next()));
+        }
+        responses.add(new StreamEntry(entryID, map));
+      }
+
+      return responses;
+    }
+
+    @Override
+    public String toString() {
+      return "List<StreamEntry>";
+    }
+  };
+  
+  public static final redis.clients.jedis.Builder<List<StreamPendingEntry>> STREAM_PENDING_ENTRY_LIST = new redis.clients.jedis.Builder<List<StreamPendingEntry>>() {
+    @Override
+    @SuppressWarnings("unchecked")
+    public  List<StreamPendingEntry> build(Object data) {
+      if (null == data) {
+        return null;
+      }
+      
+      List<Object> streamsEntries = (List<Object>)data;
+      List<StreamPendingEntry> result = new ArrayList<>(streamsEntries.size());
+      for(Object streamObj : streamsEntries) {
+        List<Object> stream = (List<Object>)streamObj;
+        String id = SafeEncoder.encode((byte[])stream.get(0));
+        String consumerName = SafeEncoder.encode((byte[])stream.get(1));
+        long idleTime = BuilderFactory.LONG.build(stream.get(2));      
+        long deliveredTimes = BuilderFactory.LONG.build(stream.get(3));
+        result.add(new StreamPendingEntry(new StreamEntryID(id), consumerName, idleTime, deliveredTimes));
+      }
+      return result;
+    }
+
+    @Override
+    public String toString() {
+      return "List<StreamPendingEntry>";
+    }
+  };
+
+  public static final redis.clients.jedis.Builder<Object> OBJECT = new Builder<Object>() {
+    @Override
+    public Object build(Object data) {
+      return data;
+    }
+    @Override
+    public String toString() {
+      return "Object";
+    }
+  };
+
+
+
+  private BuilderFactory() {
+    throw new InstantiationError( "Must not instantiate this class" );
+  }
+
+}
