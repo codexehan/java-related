@@ -102,11 +102,12 @@ public class TestRedis {
     public static void HashOperation(Jedis jedis){
         /**
          批量获取 批量写入
-         jedis.hmget()
+         jedis.hmget()  string  Map
          jedis.hmset()
 
          jedis.hincrby("hash-key", "key-name")//+1
          */
+
     }
 
     public static void ZSetOperation(Jedis jedis){
@@ -131,6 +132,8 @@ public class TestRedis {
          zuninstore
          可以传入聚合函数，按照min,sum,max来进行选择
          */
+        jedis.zrangeByScoreWithScores();
+        jedis.zrangeByScore();
     }
 
     public static void testExpire(Jedis jedis) {
