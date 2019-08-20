@@ -28,4 +28,5 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     compile 'com.rabbitmq:amqp-client:5.7.0'
+    compile 'org.apache.rocketmq:rocketmq-client:4.3.0'
 }
