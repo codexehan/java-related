@@ -74,7 +74,6 @@ public class TestRedis {
         //还有可阻塞的brpop blpop brpoplpush(从一个list里面弹出，存到另外一个list中) 可以用作消息传递和任务队列
 
 
-
     }
 
     public static void SetOperation(Jedis jedis){
@@ -132,8 +131,8 @@ public class TestRedis {
          zuninstore
          可以传入聚合函数，按照min,sum,max来进行选择
          */
-        jedis.zrangeByScoreWithScores();
-        jedis.zrangeByScore();
+        /*jedis.zrangeByScoreWithScores();
+        jedis.zrangeByScore();*/
     }
 
     public static void testExpire(Jedis jedis) {
