@@ -22,6 +22,7 @@ public class Set_Data_Sample {
                 .forPath(path,"init".getBytes());
         Stat stat = new Stat();
         client.getData().storingStatIn(stat).forPath(path);
-        client.setData();
+        client.setData().withVersion(stat.getVersion()).forPath(path);
+
     }
 }
