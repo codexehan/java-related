@@ -38,5 +38,6 @@ dependencies {
     compile group: 'org.apache.zookeeper', name: 'zookeeper', version: '3.5.5'
     // https://mvnrepository.com/artifact/org.apache.curator/curator-framework
     compile group: 'org.apache.curator', name: 'curator-framework', version: '2.7.0'
+    compile group: 'org.apache.curator', name: 'curator-recipes', version: '2.7.0'
 
 }
