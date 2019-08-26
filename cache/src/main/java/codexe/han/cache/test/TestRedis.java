@@ -5,6 +5,7 @@ import org.springframework.boot.autoconfigure.data.redis.RedisProperties;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import redis.clients.jedis.Jedis;
+import redis.clients.jedis.JedisPubSub;
 
 @Slf4j
 public class TestRedis {
@@ -162,5 +163,33 @@ public class TestRedis {
             }
             System.out.println(jedis.get("testexpire"));
         }
+    }
+
+    public static void pubSub(Jedis jedis){
+        /**
+         * subscribe
+         * Note
+         * Use different jedis object to pub/sub
+         * subscribe in different thread
+         * unsubscribe asap subscription is no longer needed
+         */
+        JedisPubSub jedisPubSub = new JedisPubSub() {
+            @Override
+            public void onMessage(String channel, String message) {
+                super.onMessage(channel, message);
+            }
+        };
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                jedis.subscribe(jedisPubSub,"channel_name");
+            }
+        }).start();
+
+        /**
+         * publish message
+         */
+        jedis.publish("channel_name","msg");
     }
 }

@@ -1,4 +1,4 @@
-package codexe.han.zookeeper.curator;
+package codexe.han.zookeeper.curator.distributed_tool;
 
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.CuratorFrameworkFactory;
@@ -14,7 +14,8 @@ public class Recipes_MasterSelect {
     static String master_path = "/curator_recipes_master_path";
 
     static CuratorFramework client = CuratorFrameworkFactory.builder()
-            .connectString("")
+            .connectString("172.28.2.19:2181,172.28.2.20:2182,172.28.2.24:2183")
+            .sessionTimeoutMs(5000)
             .retryPolicy(new ExponentialBackoffRetry(1000,3))
             .build();
 

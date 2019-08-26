@@ -1,4 +1,4 @@
-package codexe.han.zookeeper.curator;
+package codexe.han.zookeeper.curator.distributed_tool;
 
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.CuratorFrameworkFactory;
@@ -9,10 +9,11 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.concurrent.CountDownLatch;
 
-public class DistributedLock {
+public class Recipes_DistributedLock {
     static String lock_path = "/curator_recipes_lock_path";
     static CuratorFramework client = CuratorFrameworkFactory.builder()
-            .connectString("")
+            .connectString("172.28.2.19:2181,172.28.2.20:2182,172.28.2.24:2183")
+            .sessionTimeoutMs(5000)
             .retryPolicy(new ExponentialBackoffRetry(1000,3))
             .build();
     public static void main(String[] args) {
@@ -26,6 +27,7 @@ public class DistributedLock {
                 public void run() {
                     try{
                         down.await();
+                        //阻塞式获取
                         lock.acquire();
                     } catch (InterruptedException e) {
                         e.printStackTrace();
