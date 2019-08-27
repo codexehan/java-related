@@ -22,25 +22,22 @@ public class Recipes_DistributedLock {
         final InterProcessMutex lock = new InterProcessMutex(client,lock_path);
         final CountDownLatch down = new CountDownLatch(1);
         for(int i=0;i<30;i++){
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    try{
-                        down.await();
-                        //阻塞式获取
-                        lock.acquire();
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                    SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss|SSS");
-                    String orderNo = sdf.format(new Date());
-                    try {
-                        lock.release();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+            new Thread(() -> {
+                try{
+                    down.await();
+                    //阻塞式获取
+                    lock.acquire();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss|SSS");
+                String orderNo = sdf.format(new Date());
+                try {
+                    lock.release();
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }).start();
         }
