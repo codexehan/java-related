@@ -1,3 +1,8 @@
+#配置 tickTime=2000 dataDir=/var/zookeeper/ clientPort=2181 initLimit=5 syncLimit=2 server.2=zoo2:2888:3888 server.3=zoo3:2888:3888
+#initLimit是follower服务器启动过程中，与leader数据同步花费的时间max
+#syncLimit是leader follower之间进行心跳检测的最大延时。如果一直没有心跳，就认为脱离了
+#server.1=zoo1:2888:3888 self_id port1 follower与leader运行时的通信 port2 leader选举投票通信
+
 version: '3.1'
 
 services:

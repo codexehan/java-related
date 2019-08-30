@@ -17,7 +17,7 @@ public class SetData_API_ASync_Usage implements Watcher {
     private static ZooKeeper zk;
 
     public static void main(String[] args) {
-        String path = "/zk-book";
+        String path = "/zk-bookss";
         try {
             zk = new ZooKeeper("172.28.2.19:2181,172.28.2.20:2182,172.28.2.24:2183",5000,new SetData_API_ASync_Usage());
             countDownLatch.await();
@@ -25,7 +25,7 @@ public class SetData_API_ASync_Usage implements Watcher {
             zk.create(path, "123".getBytes(), ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.EPHEMERAL);
             zk.setData(path,"456".getBytes(),-1,new IStatCallback(), null);
 
-            Thread.sleep(5000);
+            Thread.sleep(Integer.MAX_VALUE);
         } catch (IOException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
