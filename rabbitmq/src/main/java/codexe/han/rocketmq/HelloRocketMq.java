@@ -110,8 +110,9 @@ class Consumer{
         consumer.setNamesrvAddr("172.28.2.18:9876");
 
         // Subscribe one more more topics to consume.
-        consumer.subscribe("TopicTest", "*");
+        consumer.subscribe("TopicTest", "*");//subExpression 消息过滤表达式，TAG或SQL92表达式 还可以使用类的模式进行过滤
         // Register callback to execute on arrival of messages fetched from brokers.
+       //并发消费会自动维护一个线程池
         consumer.registerMessageListener(new MessageListenerConcurrently() {
 
             @Override

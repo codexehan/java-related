@@ -151,8 +151,11 @@ public class TestRedis {
     }
 
     public static void testExpireRepeat(Jedis jedis){
+        //jedis.set("lock", "true", "NX", ("EX" for second or "PX" for millisecond), 10); //setnx+expire
         jedis.set("testexpire","1");
         jedis.expire("testexpire",1);
+
+        //jedis.ttl("key");//获取过期时间
 
         for(int i =0 ;i<20;i++){
             try {
