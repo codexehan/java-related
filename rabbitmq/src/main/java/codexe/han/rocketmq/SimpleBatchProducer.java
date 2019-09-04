@@ -45,6 +45,7 @@ public class SimpleBatchProducer {
 
 /**
  * 默认的负载均衡的发送算法是轮询策略，如果需要id相同的，发送到同一个丢列中，需要进行自定义分发
+ * 否则就需要引入分布式锁
  */
 
 class CustomBatchProducer{
@@ -59,7 +60,7 @@ class CustomBatchProducer{
             String[] tags = new String[]{"TagA","TagB","TagC","TagD","TagE"};
             for(int i=0;i<100;i++){
                 int orderId = i%10;
-                Message msg = new Message("TopicTestjjj",tags[i%tags.length],"KEY"+i, ("Hellp RocketMQ "+i).getBytes(RemotingHelper.DEFAULT_CHARSET));
+                Message msg = new Message("TopicTestjjj",tags[i%tags.length],"KEY"+i, ("Hello RocketMQ "+i).getBytes(RemotingHelper.DEFAULT_CHARSET));
 
                 SendResult sendResult = producer.send(msg, new MessageQueueSelector() {
                     @Override
