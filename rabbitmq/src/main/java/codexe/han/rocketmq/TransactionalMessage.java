@@ -78,6 +78,10 @@ class TransactionListenerImpl implements TransactionListener{
     public LocalTransactionState executeLocalTransaction(Message msg, Object arg) {
         String bizUniNO = msg.getUserProperty("bizUniNo");//从消息中获取业务唯一ID
 
+        //调用本地事务 进行数据库操作，操作成功 return LocalTransactionState.COMMIT
+        //操作失败 return LocalTransactionState.ROLLBACK
+        //无法得知 return LocalTransactionState.UNKNOWN
+
         return LocalTransactionState.UNKNOW;//这边返回unknown就会永远执行事务消息回查
 
     }
