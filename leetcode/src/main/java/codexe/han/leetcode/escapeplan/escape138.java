@@ -12,6 +12,7 @@ package codexe.han.leetcode.escapeplan;
  */
 public class escape138 {
     public Node copyRandomList(Node head) {
+        if(head==null) return null;
         Node p = head;
 
         //插入每个节点的复制节点
@@ -23,17 +24,19 @@ public class escape138 {
         //每个复制节点的random指向原始节点的random的next
         p=head.next;
         while(p !=null){
-            p.random = p.random.next;
+            p.random = p.random==null?null:p.random.next;
             p=p.next==null?null:p.next.next;
         }
         //每个复制节点next指向原来next的next
         //恢复原始节点
         p=head;
         Node q = head.next;
-        Node dupHead = q;
+        Node dupHead = head.next;
         while(p!=null && q!=null){
             p.next = p.next==null?null:p.next.next;
-            q = q.next==null?null:q.next.next;
+            q.next = q.next==null?null:q.next.next;
+            p = p.next;
+            q = q.next;
         }
 
         return dupHead;
