@@ -1,0 +1,5 @@
+#https://github.com/foxiswho/docker-rocketmq
+ #
+ #进入rmq目录,执行docker-compose up,将会一键生成3个容器
+ #浏览器访问
+#8080
