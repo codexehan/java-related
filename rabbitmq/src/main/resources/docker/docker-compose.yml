@@ -1,5 +1,85 @@
-#https://github.com/foxiswho/docker-rocketmq
- #
- #进入rmq目录,执行docker-compose up,将会一键生成3个容器
- #浏览器访问
-#8080
+#get code
+#git clone https://github.com/PrinsWu/rocketmq-externals.git
+#in 4.3.0 folder
+#cd rocketmq-docker/4.3.0
+#reference the README.md in docker-compose/README.md
+#cat docker-compose/README.md
+#build docker images (I mark the docker run)
+#./play-docker-compose.sh
+#setup your real IP that can be connected by other machines
+#vi docker-compose/data/broker/conf/broker.properties
+#run docker-compose
+#docker-compose -f docker-compose/docker-compose.yml up
+#stop that if need
+#docker-compose -f docker-compose/docker-compose.yml down
+#解法
+#最主要的問題是broker的Dockerfile沒有指定設定檔，這導致沒版法從外部傳參數給broker。
+#修改docker-compose/rocketmq-broker/Dockerfile最後一行，指定broker.properties
+#&& sh mqbroker -n namesrv:9876  -c /opt/conf/broker.properties
+#修改docker-compose.yml，把外部的broker.properties對到container內部。完整的code請看github上的source。
+#volumes:
+#  - ./data/broker/logs:/opt/logs
+#  - ./data/broker/store:/opt/store
+#  - ./data/broker/conf:/opt/conf
+#另外在docker-compose.yml裡加上rocketmq-console，以方便觀察。
+#連上rocketmq-console查看broker的ip。我在docker-compose.yml用了8180 port以避免跟常用的8080衝突。也可以自行修改調成其他port。
+#http://localhost:8180
+
+version: '2'
+services:
+  namesrv:
+    image: apache/rocketmq-namesrv:4.3.0-compose
+    container_name: rmqnamesrv
+    build:
+      context: ./rocketmq-namesrv
+      args:
+        - version=4.3.0
+    ports:
+      - 9876:9876
+    volumes:
+      - ./data/namesrv/logs:/opt/logs
+      - ./data/namesrv/store:/opt/store
+  broker1:
+    image: apache/rocketmq-broker:4.3.0-compose
+    container_name: rmqbroker1
+    build:
+      context: ./rocketmq-broker
+      args:
+        - version=4.3.0
+    ports:
+      - 10909:10909
+      - 10911:10911
+    volumes:
+      - ./data/broker1/logs:/opt/logs
+      - ./data/broker1/store:/opt/store
+      - ./data/broker1/conf:/opt/conf
+    depends_on:
+      - namesrv
+
+  broker2:
+    image: apache/rocketmq-broker:4.3.0-compose
+    container_name: rmqbroker2
+    build:
+      context: ./rocketmq-broker
+      args:
+        - version=4.3.0
+    ports:
+      - 10912:10909
+      - 10913:10911
+    volumes:
+      - ./data/broker2/logs:/opt/logs
+      - ./data/broker2/store:/opt/store
+      - ./data/broker2/conf:/opt/conf
+    depends_on:
+      - namesrv
+
+  rocketmq-console-ng:
+    container_name: rmqconsole
+    image: styletang/rocketmq-console-ng:latest
+    depends_on:
+        - broker1
+        - broker2
+    ports:
+        - 8180:8080
+    environment:
+        NAMESRV_ADDR: "namesrv:9876"

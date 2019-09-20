@@ -29,13 +29,14 @@ class SendMsgSync{
         DefaultMQProducer producer = new
                 DefaultMQProducer("hello_rocket_mq");
         // Specify name server addresses.
-        producer.setNamesrvAddr("172.28.2.18:9876");
+        producer.setNamesrvAddr("172.28.10.43:9876");
+
         //Launch the instance.
         try {
             producer.start();
             for (int i = 0; i < 100; i++) {
                 //Create a message instance, specifying topic, tag and message body.
-                Message msg = new Message("TopicTest" /* Topic */,
+                Message msg = new Message("TopicTest3" /* Topic */,
                         "TagA" /* Tag */,
                         ("Hello RocketMQ " +
                                 i).getBytes(RemotingHelper.DEFAULT_CHARSET) /* Message body */

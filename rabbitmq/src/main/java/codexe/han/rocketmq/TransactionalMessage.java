@@ -5,6 +5,7 @@ import org.apache.rocketmq.client.producer.*;
 import org.apache.rocketmq.common.message.Message;
 import org.apache.rocketmq.common.message.MessageExt;
 import org.apache.rocketmq.remoting.common.RemotingHelper;
+import org.springframework.transaction.TransactionStatus;
 
 import java.io.UnsupportedEncodingException;
 import java.util.concurrent.*;
@@ -62,9 +63,6 @@ public class TransactionalMessage {
 
 
 
-    }
-
-}
 
 class TransactionListenerImpl implements TransactionListener{
 
@@ -96,6 +94,6 @@ class TransactionListenerImpl implements TransactionListener{
     public LocalTransactionState checkLocalTransaction(MessageExt msg) {
         Integer status = 0;
         String bizUniNo = msg.getUserProperty("bizUniNo");//从消息中获取业务唯一ID
-
+        return LocalTransactionState.COMMIT_MESSAGE;
     }
 }
