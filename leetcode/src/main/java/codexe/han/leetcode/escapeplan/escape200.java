@@ -10,20 +10,23 @@ package codexe.han.leetcode.escapeplan;
 public class escape200 {
     public int numIslands(char[][] grid) {
         int res = 0;
-        boolean[][] visited = new boolean[grid.length][grid[0].length];
-        for(int i=0;i<grid.length;i++){
-            for(int j=0;j<grid[0].length;j++){
-                if(!visited[i][j]&&grid[i][j]==1){
-                    res++;
+        if(grid.length!=0) {
+            boolean[][] visited = new boolean[grid.length][grid[0].length];
+            for (int i = 0; i < grid.length; i++) {
+                for (int j = 0; j < grid[0].length; j++) {
+                    if (!visited[i][j] && grid[i][j] == '1') {
+                        dfs(grid, visited, i, j);
+                        res++;
+                    }
                 }
             }
         }
         return res;
     }
     public void dfs(char[][] grid, boolean[][] visited, int x, int y){
-        if(x<grid.length && y<grid[0].length && !visited[x][y]) {
+        if(x>=0&&x<grid.length && y>=0 && y<grid[0].length && !visited[x][y]) {
             visited[x][y] = true;
-            if(grid[x][y]==1){
+            if(grid[x][y]=='1'){
                 dfs(grid,visited,x+1,y);
                 dfs(grid,visited,x-1,y);
                 dfs(grid,visited,x,y+1);

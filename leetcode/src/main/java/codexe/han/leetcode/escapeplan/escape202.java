@@ -19,15 +19,23 @@ import java.util.Set;
  * 12 + 02 + 02 = 1
  */
 public class escape202 {
-    public boolean isHappy(int n) {
-        int tmp=0;
+    public static void main(String[] args) {
+        System.out.println(isHappy(145));
+    }
+    public static boolean isHappy(int n) {
+        int tmp;
         Set<Integer> res = new HashSet<>();
-        while(!res.contains(tmp)){
-            res.add(tmp);
-            while((n=n%10)!=0){
-                tmp += n*n;
+        while(!res.contains(n)){
+            res.add(n);
+            tmp=0;
+            if((n%10==0&&n!=0)) return true;//100不执行循环的结果
+            while((n%10)!=0){//100直接不执行循环，tmp等于0  但是20会出问题，所以应该从高位开始取值
+                tmp += Math.pow((n%10),2);
+                n = n/10;
             }
             if(tmp==1) return true;
+            n=tmp;
+            System.out.println(n);
         }
         return false;
     }
