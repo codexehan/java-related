@@ -20,22 +20,21 @@ import java.util.Set;
  */
 public class escape202 {
     public static void main(String[] args) {
-        System.out.println(isHappy(145));
+        System.out.println(isHappy(12));
     }
     public static boolean isHappy(int n) {
-        int tmp;
-        Set<Integer> res = new HashSet<>();
-        while(!res.contains(n)){
-            res.add(n);
+        Set<Integer> set=new HashSet<Integer>();
+        int tmp=n;
+        int nn=0;
+        while(!set.contains(tmp)){
+            set.add(tmp);
+            nn=tmp;
             tmp=0;
-            if((n%10==0&&n!=0)) return true;//100不执行循环的结果
-            while((n%10)!=0){//100直接不执行循环，tmp等于0  但是20会出问题，所以应该从高位开始取值
-                tmp += Math.pow((n%10),2);
-                n = n/10;
+            while(nn!=0){
+                tmp+=Math.pow(nn%10,2);
+                nn=nn/10;
             }
             if(tmp==1) return true;
-            n=tmp;
-            System.out.println(n);
         }
         return false;
     }
