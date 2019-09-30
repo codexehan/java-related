@@ -32,9 +32,9 @@ class Trie {
                     node.nextNodes[n].nextNodes[j] = null;
                 }
             }
-            /*else{
-                node.nextNodes[n].nextNodes = new TrieNode[26];
-            }*/
+            else{
+                if(!node.nextNodes[n].isWord) node.nextNodes[n].isWord = i==word.length()-1;//这里要注意，一定不要覆盖之前已经插入的isWord
+            }
             node = node.nextNodes[n];
 
         }
