@@ -16,7 +16,7 @@ import java.util.Arrays;
  */
 public class QuickSort {
     public static void main(String[] args) {
-        int[] arr = new int[]{3,9,6,4,6,2};
+        int[] arr = new int[]{4,5,5,6};
         quickSort(arr,0,arr.length-1);
         System.out.println(Arrays.toString(arr));
     }
@@ -30,7 +30,7 @@ public class QuickSort {
             while(l<r){
                 //因为l 和 r相遇以后，要和基数进行交换，所以，如果基数选择了第一个，就需要进行替换，因为要替换到基数左边，
                 // 所以必须先动右边，以保证交换数字小于基数
-                while(l<r&&arr[r]>=base){
+                while(l<r&&arr[r]>base){
                     r--;
                 }
                 while(l<r&&arr[l]<=base){
@@ -45,8 +45,8 @@ public class QuickSort {
                     r--;*/
                 }
             }
-            arr[left]=arr[l];
-            arr[l]=base;
+            arr[left]=arr[r];
+            arr[r]=base;
    //         System.out.print(Arrays.toString(arr));
             quickSort(arr, left, l-1 );
             quickSort(arr, l+1, right);
