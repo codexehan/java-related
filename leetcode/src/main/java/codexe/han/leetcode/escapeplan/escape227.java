@@ -6,6 +6,7 @@ import java.util.LinkedList;
  * + 号存整数，- 号存负数
  * * 号相乘，/ 号相除
  * 最后全部相加
+ * 结尾添加停止字符，有助于程序简洁
  */
 public class escape227 {
     public static void main(String[] args) {
