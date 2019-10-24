@@ -1,0 +1,70 @@
+version: '3.2'
+services:
+  zookeeper:
+    image: wurstmeister/zookeeper
+    ports:
+      - "2181:2181"
+    restart: always
+  kafka1:
+    build: .
+    ports:
+      - "9092:9092"
+      - "9997:9997"
+    environment:
+      HOSTNAME_COMMAND: wget -t3 -T2 -qO-  http://169.254.169.254/latest/meta-data/local-ipv4
+      #KAFKA_ADVERTISED_HOST_NAME: 10.60.7.119
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_LOG_DIRS: /kafka/kafka-logs
+      KAFKA_LOG_RETENTION_HOURS: "168"
+      KAFKA_DELETE_TOPIC_ENABLE: "true"
+      JMX_PORT: 9997
+      KAFKA_JMX_OPTS: -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Djava.rmi.server.hostname=127.0.0.1 -Dcom.sun.management.jmxremote.rmi.port=9997
+    depends_on:
+      - zookeeper
+    volumes:
+      - /home/ubuntu/kafka-logs/broker-1:/kafka/kafka-logs
+      - /var/run/docker.sock:/var/run/docker.sock
+    restart: always
+  kafka2:
+    build: .
+    ports:
+      - "9091:9092"
+      - "9998:9998"
+    environment:
+      HOSTNAME_COMMAND: wget -t3 -T2 -qO-  http://169.254.169.254/latest/meta-data/local-ipv4
+      #KAFKA_ADVERTISED_HOST_NAME: 10.60.7.119
+      KAFKA_BROKER_ID: 2
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_LOG_DIRS: /kafka/kafka-logs
+      KAFKA_LOG_RETENTION_HOURS: "168"
+      KAFKA_DELETE_TOPIC_ENABLE: "true"
+      JMX_PORT: 9998
+      KAFKA_JMX_OPTS: -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Djava.rmi.server.hostname=127.0.0.1 -Dcom.sun.management.jmxremote.rmi.port=9998
+    depends_on:
+      - zookeeper
+    volumes:
+      - /home/ubuntu/kafka-logs/broker-2:/kafka/kafka-logs
+      - /var/run/docker.sock:/var/run/docker.sock
+    restart: always
+  kafka3:
+    build: .
+    ports:
+     - "9090:9092"
+     - "9999:9999"
+    environment:
+      HOSTNAME_COMMAND: wget -t3 -T2 -qO-  http://169.254.169.254/latest/meta-data/local-ipv4
+      #KAFKA_ADVERTISED_HOST_NAME: 10.60.7.119
+      KAFKA_BROKER_ID: 3
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_LOG_DIRS: /kafka/kafka-logs
+      KAFKA_LOG_RETENTION_HOURS: "168"
+      KAFKA_DELETE_TOPIC_ENABLE: "true"
+      JMX_PORT: 9999
+      KAFKA_JMX_OPTS: -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Djava.rmi.server.hostname=127.0.0.1 -Dcom.sun.management.jmxremote.rmi.port=9999
+    depends_on:
+      - zookeeper
+    volumes:
+      - /home/ubuntu/kafka-logs/broker-3:/kafka/kafka-logs
+      - /var/run/docker.sock:/var/run/docker.sock
+    restart: always
