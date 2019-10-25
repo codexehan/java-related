@@ -47,8 +47,9 @@ services:
       args:
         - version=4.3.0
     ports:
-      - 10909:10909
-      - 10911:10911
+      - 10909:10909 #producer consumer端口号
+      - 10911:10911 #broker通信端口号
+      - 10912:10912
     volumes:
       - ./data/broker1/logs:/opt/logs
       - ./data/broker1/store:/opt/store
@@ -64,8 +65,9 @@ services:
       args:
         - version=4.3.0
     ports:
-      - 10912:10909
-      - 10913:10911
+      - 10809:10909 #producer consumer端口号
+      - 10811:10911 #broker通信端口号
+      - 10812:10912
     volumes:
       - ./data/broker2/logs:/opt/logs
       - ./data/broker2/store:/opt/store
