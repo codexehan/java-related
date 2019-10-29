@@ -6,11 +6,11 @@ import java.util.*;
  https://leetcode.com/problems/find-all-anagrams-in-a-string/discuss/92007/sliding-window-algorithm-template-to-solve-all-the-leetcode-substring-search-problem
  解决问题
  https://leetcode.com/problems/minimum-window-substring/
- https://leetcode.com/problems/longest-substring-without-repeating-characters/
+ 3 https://leetcode.com/problems/longest-substring-without-repeating-characters/
  https://leetcode.com/problems/substring-with-concatenation-of-all-words/
  https://leetcode.com/problems/longest-substring-with-at-most-two-distinct-characters/
- https://leetcode.com/problems/find-all-anagrams-in-a-string/
- https://leetcode.com/problems/longest-substring-with-at-least-k-repeating-characters/
+ 438 https://leetcode.com/problems/find-all-anagrams-in-a-string/
+ 385 https://leetcode.com/problems/longest-substring-with-at-least-k-repeating-characters/
  */
 public class 模板 {
     public List<Integer> slidingWindowTemplateByHarryChaoyangHe(String s, String t) {
@@ -220,17 +220,68 @@ class leetcode438_FindAllAnagramsInAString {
 /**
  "ababbc"
  2
+ 这个问题的关键是不知道什么时候移动begin
+ 所以我们要找到一个规则去移动begin
+
+ 思路：
+ 大于等于K的重复字符串可能包含1,2...26个unique 字符
+ 子串中 counter（unique 字符）大于测试的unique的时候，begin往后移动
  */
 class leetcode395_LongestSubstringWithAtLeastKRepeatingCharacters{
     public static void main(String[] args) {
-        longestSubstring("ababbc",2);
+        longestSubstring("weitong",2);
     }
     public static int longestSubstring(String s, int k) {
         Map<Character, Integer> map = new HashMap<>();//统计当前子串中各个字符出现的次数
-        int counter = map.size();//表示当前子串中，大于k的unique的字符个数
+        int counter = map.size();//表示当前子串中，unique的字符个数
+        int noLessThanK = 0;//表示当前子串中，大约k的字符的个数
         int begin =0,end=0;
         int res = 0;
-        while(end<s.length()){
+
+        for(int i=1;i<=26;i++){//i is the sliding window size
+            begin = 0;
+            end = 0;
+            counter = 0;
+            noLessThanK = 0;
+            map.clear();
+            while(end<s.length()){
+                if(counter<=i){//==是aaaa这种连续相等的情况统计
+                    char chEnd = s.charAt(end);
+                    map.put(chEnd,map.getOrDefault(chEnd,0)+1);
+                    if(map.get(chEnd) == k) {
+                        noLessThanK++;
+                    }
+                    counter = map.size();//多少个unique字符
+                    end++;
+                }
+                else{
+                    while(counter>i){
+                        char chBegin = s.charAt(begin);
+                        if(map.get(chBegin)==1) {
+                            map.remove(chBegin);
+                            counter--;
+                        }
+                        else if(map.get(chBegin)==k){
+                            map.put(chBegin,k-1);
+                            noLessThanK--;
+                        }
+                        else {
+                            map.put(chBegin, map.get(chBegin)-1);
+                        }
+                        begin++;
+                    }
+                }
+                //end++;//在这个地方end++会导致漏查
+                if(counter == i && noLessThanK==counter){//所有的字符出现个数都大于等于k
+                    res = Math.max(end-begin,res);
+                }
+            }
+        }
+        return res;
+
+
+
+        /*while(end<s.length()){
             char chEnd = s.charAt(end);
             map.put(chEnd,map.getOrDefault(chEnd,0)+1);
             if(map.get(chEnd)==k) counter++;
@@ -246,10 +297,9 @@ class leetcode395_LongestSubstringWithAtLeastKRepeatingCharacters{
                 begin++;
             }
         }
-        return res;
+        return res;*/
 
-
-        char[] str = s.toCharArray();
+        /*char[] str = s.toCharArray();
         int[] counts = new int[26];
         int h, i, j, idx, max = 0, unique, noLessThanK;
 
@@ -283,6 +333,29 @@ class leetcode395_LongestSubstringWithAtLeastKRepeatingCharacters{
             }
         }
 
-        return max;
+        return max;*/
+    }
+
+
+}
+
+/**
+ Given a string S and a string T, find the minimum window in S which will contain all the characters in T in complexity O(n).
+
+ Example:
+
+ Input: S = "ADOBECODEBANC", T = "ABC"
+ Output: "BANC"
+ */
+class leetcode76_MinimunWindowSubstring{
+    public String minWindow(String s, String t) {
+        return "";
+    }
+}
+
+class BitsetOperation{
+    public static void main(String[] args) {
+        BitSet bitSet = new BitSet(Integer.MAX_VALUE-100);
+        System.out.println("bit set size is "+bitSet.size());
     }
 }

@@ -16,6 +16,7 @@ public class TransactionalMessage {
         TransactionListener transactionListener = new TransactionListenerImpl();
 
         TransactionMQProducer producer = new TransactionMQProducer("transaction_producer");
+        producer.setNamesrvAddr("172.28.10.43:9876");
 
         //自定义线程池 用来处理check request
         ExecutorService executorService = new ThreadPoolExecutor(2, 5, 100, TimeUnit.SECONDS, new ArrayBlockingQueue<Runnable>(2000), new ThreadFactory() {
@@ -34,7 +35,7 @@ public class TransactionalMessage {
 
 
         String[] tags = new String[] {"TagA", "TagB", "TagC", "TagD", "TagE"};
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 1; i++) {
             try {
                 Message msg =
                         new Message("TopicTest1234", tags[i % tags.length], "KEY" + i,
@@ -45,7 +46,7 @@ public class TransactionalMessage {
 
                 System.out.printf("%s%n", sendResult);
 
-                Thread.sleep(10);
+                Thread.sleep(1);
             } catch (MQClientException | UnsupportedEncodingException e) {
                 e.printStackTrace();
             } catch (InterruptedException e) {
@@ -94,6 +95,15 @@ class TransactionListenerImpl implements TransactionListener{
     public LocalTransactionState checkLocalTransaction(MessageExt msg) {
         Integer status = 0;
         String bizUniNo = msg.getUserProperty("bizUniNo");//从消息中获取业务唯一ID
-        return LocalTransactionState.COMMIT_MESSAGE;
+        System.out.println(msg.toString());
+        System.out.println(new String(msg.getBody()));
+        System.out.println("recheck transaction result...");
+        /**
+         TRANSACTION_CHECK_TIMES 可以统计回查次数，回查一直失败的话，建议人工处理
+         事务执行失败的话，会发送rollback
+         回查的可能是，事务执行失败或者执行成功，但是mq没有收到commit 或者 rollback的指示
+         所以如果回查一直失败的话，需要人工干预，这也是官方推荐的做法
+         */
+        return LocalTransactionState.UNKNOW;
     }
 }
