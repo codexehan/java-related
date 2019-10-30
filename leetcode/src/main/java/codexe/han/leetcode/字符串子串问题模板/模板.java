@@ -5,7 +5,7 @@ import java.util.*;
 /**
  https://leetcode.com/problems/find-all-anagrams-in-a-string/discuss/92007/sliding-window-algorithm-template-to-solve-all-the-leetcode-substring-search-problem
  解决问题
- https://leetcode.com/problems/minimum-window-substring/
+ 76 https://leetcode.com/problems/minimum-window-substring/
  3 https://leetcode.com/problems/longest-substring-without-repeating-characters/
  https://leetcode.com/problems/substring-with-concatenation-of-all-words/
  https://leetcode.com/problems/longest-substring-with-at-most-two-distinct-characters/
@@ -347,9 +347,50 @@ class leetcode395_LongestSubstringWithAtLeastKRepeatingCharacters{
  Input: S = "ADOBECODEBANC", T = "ABC"
  Output: "BANC"
  */
+//测试没有通过，但是我感觉没什么问题。。。
 class leetcode76_MinimunWindowSubstring{
-    public String minWindow(String s, String t) {
-        return "";
+    public static void main(String[] args) {
+        System.out.println(minWindow("CAACC","ACC"));
+    }
+    public static String minWindow(String s, String t) {
+        if(t.length()==0) return "";
+        Map<Character,Integer> map = new HashMap<>();
+        Map<Character, Integer> subStrMap = new HashMap<>();
+        for(char ch : t.toCharArray()){
+            map.put(ch,map.getOrDefault(ch,0)+1);
+        }
+        int counter = 0;//包含的unique character的个数
+        int begin=0,end=0;
+        int minBegin=0, minEnd=0, minScope=Integer.MAX_VALUE;
+        while(end<s.length()){
+            char chEnd = s.charAt(end);
+            if(map.containsKey(chEnd)){
+                subStrMap.put(chEnd, subStrMap.getOrDefault(chEnd,0)+1);
+                if(subStrMap.get(chEnd) == map.get(chEnd)){
+                    counter++;
+                }
+            }
+            end++;
+            while(counter==map.size()){//当前子串中包含了所有的
+                char chBegin = s.charAt(begin);
+                if(map.containsKey(chBegin)){
+                    //获取结果
+                    if(end-begin<minScope){
+                        minScope = end-begin;
+                        minBegin = begin;
+                        minEnd = end;
+                    }
+
+                    if(subStrMap.get(chBegin)==map.get(chBegin)){
+                        counter--;
+                    }
+                    subStrMap.put(chBegin,subStrMap.get(chBegin)-1);
+                }
+                begin++;
+            }
+
+        }
+        return minBegin==minEnd?"":s.substring(minBegin,minEnd);
     }
 }
 
