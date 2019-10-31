@@ -11,7 +11,7 @@ public class LongestCommonSubsequence {
                     dp[i][j] = dp[i-1][j-1]+1;
                 }
                 else{
-                    dp[i][j] = Math.max(dp[i-1][j],dp[i][j-1]);
+                    dp[i][j] = Math.max(dp[i-1][j],dp[i][j-1]);//为什么是i-1,j i,j-1 想象成二维数组，从左到右，从上到下
                 }
             }
         }
