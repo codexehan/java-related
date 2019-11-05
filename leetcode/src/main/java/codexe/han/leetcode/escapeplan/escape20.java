@@ -12,14 +12,14 @@ import java.util.LinkedList;
 public class escape20 {
     public static void main(String[] args) {
         String s = "([]){}";
-        isValid(s);
+        isValid1(s);
     }
-    public static boolean isValid(String s){
+    /*public static boolean isValid(String s){
         LinkedList<Character> stack = new LinkedList<>();
         for(char ch : s.toCharArray()){
             if(stack.isEmpty()||stack.peekFirst()=='(' || stack.peekFirst()=='['|| stack.peekFirst()=='{'){
                 if(ch == '(' || ch == '[' || ch == '{'){
-                    stack.push(ch);
+                    stack.push(ch);//equal to addFirst()
                 }
                 else{
                     if(stack.isEmpty()) return false;
@@ -31,6 +31,22 @@ public class escape20 {
             }
             else{
                 return false;
+            }
+        }
+        return stack.isEmpty();
+    }*/
+    public static boolean isValid1(String s){
+        LinkedList<Character> stack = new LinkedList<>();
+        for(char ch : s.toCharArray()){
+            if(ch == '(' || ch == '[' || ch == '{'){
+                stack.push(ch);//equal to addFirst()
+            }
+            else{
+                if(stack.isEmpty()) return false;
+                char stackTop = stack.pollFirst();//假设栈最后只有一个元素，不能直接出栈
+                if (!((stackTop == '(' && ch == ')') || (stackTop == '[' && ch == ']') || (stackTop == '{' && ch == '}'))) {
+                    return false;
+                }
             }
         }
         return stack.isEmpty();

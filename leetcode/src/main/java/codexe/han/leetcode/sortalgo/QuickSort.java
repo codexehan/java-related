@@ -1,6 +1,8 @@
 package codexe.han.leetcode.sortalgo;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * 选一个base,比base小的移动到base左边，比base大的移动到右边
@@ -22,6 +24,7 @@ public class QuickSort {
     }
 
     public static void quickSort(int[] arr, int left, int right){
+        //将把这个数大的数全部放到它的右边，小于或者等于它的数全放到它的左边；
         if(left<right){
             int base = arr[left];
             //l和r指向的一定是小于等于base的 r指向的一定是大于等于base的
@@ -53,3 +56,83 @@ public class QuickSort {
         }
     }
 }
+
+class Demo{
+    public void quickSort(int[] nums, int start, int end){
+        if(start<end) {
+            int left = start;
+            int right = end;
+            int base = nums[left];
+            while (left < right) {
+                while (left < right && nums[right] > base) right--;//递增序列 0，1，2，3，4，5right最后会指向0
+                while (left < right && nums[left] <= base) left++;
+                if (left < right) {
+                    swap(nums, left, right);
+                }
+            }
+            nums[start] = nums[left];//因为先检测right，right最后停止的位置，要么是等于left的位置，要么是小于等于base的位置
+            nums[left] = base;
+            quickSort(nums, start, left - 1);
+            quickSort(nums, left + 1, end);
+        }
+    }
+    public void swap(int[] nums, int i, int j){
+        int tmp = nums[i];
+        nums[i] = nums[j];
+        nums[j] = tmp;
+    }
+    public List<Integer> sortArray(int[] nums) {
+        List<Integer> res = new ArrayList<>();
+        quickSort(nums,0,nums.length-1);
+        for(int n:nums){
+            res.add(n);
+        }
+        return res;
+    }
+
+    public static void main(String[] args) {
+        Demo test = new Demo();
+        test.sortArray(new int[]{1,2,3,4,5});
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -8,6 +8,9 @@ import java.util.List;
  * 剪枝条件
  * 【右括号的数目一定小于左括号】才可以放右括号
  * 【左括号数目必须小于】才可以放左括号
+ *
+ * 什么时候放右括号：left>right
+ * 什么时候放左括号：left<n
  */
 public class escape22 {
     public List<String> generateParenthesis(int n) {
@@ -33,3 +36,26 @@ public class escape22 {
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
