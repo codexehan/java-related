@@ -11,9 +11,33 @@ package codexe.han.leetcode.escapeplan;
  */
 public class escape33 {
     public int search(int[] nums, int target) {
-        return binarySearch(0, nums.length-1, target, nums);
+        int left = 0, right = nums.length-1;
+        while(left<=right){
+            int mid = left + (right-left)/2;
+            if(nums[mid] == target) return mid;
+            if(nums[left]<=nums[mid]){//左边单调递增 == 只可能出现在left=mid的时候
+                if(nums[left]<=target&&target<nums[mid]){
+                    right = mid-1;
+                }
+                else{
+                    left = mid+1;
+                }
+            }
+            else if(nums[left]>nums[mid]){//右边单调递增
+                if(nums[mid]<target&&target<=nums[right]){
+                    left = mid+1;
+                }
+                else{
+                    right = mid-1;
+                }
+            }
+        }
+        return -1;
     }
+
+
     public int binarySearch(int left, int right, int target, int[] nums){
+        //下面也是对的
         while(left<=right){//right left 移动都是=mid,所以会出现left==right的情况，跳出
             int mid = (left+right)/2;
             if(nums[mid] == target) return mid;
@@ -42,6 +66,7 @@ public class escape33 {
             }
         }
         return -1;
+
     }
 }
 
@@ -86,44 +111,63 @@ The return answers should be in the same order as the original array.
 
  */
 
-class escape81{
+class leetcode81{
     public static void main(String[] args) {
         //[2,5,6,0,0,1,2] 3
         //[1,3,1,1,1] 3
         getRes(new int[]{1,3,1,1,1},3);
     }
-    public static boolean getRes(int [] nums, int target){
-        int left = 0;
-        int right = nums.length-1;
+
+    public boolean search(int[] nums, int target){
+        int left = 0, right = nums.length-1;
         while(left<=right){
             int mid = left + (right-left)/2;
-            if(nums[mid]==target) return true;
-            if(nums[mid]==nums[right]){//右边区间都是相同的数字 搜索左边
-                if(target<nums[mid]) {
-                    return false;
-                }
-                else if(target > nums[mid]){
-                    right = mid-1;//搜索左边
-                }
+            if(target == nums[mid]){
+                return true;
             }
-            else if(nums[mid]<nums[right]) {//右边是连续的递增区间
-                if (nums[mid] < target && target <= nums[right]) {//右边是单调递增的
-                    left = mid + 1;
-                }
-                else{
-                    right = mid-1;
-                }
-            }
-            else if(nums[mid]>nums[left]){//左边是连续的递增区间
-                if(nums[left] <= target && target<nums[mid]){
+            else if(nums[left]<nums[mid]){//左边是连续递增的
+                if(nums[left]<=target&&target<nums[mid]){
                     right = mid-1;
                 }
                 else{
                     left = mid+1;
                 }
             }
+            else if(nums[left]>nums[mid]){//右边是连续递增的
+                if(nums[mid]<target && target<=nums[right]){
+                    left = mid+1;
+                }
+                else{
+                    right = mid-1;
+                }
+            }
+            else{//其他情况无法确定哪边是递增的 就只做left++
+                left++;//这边就变成了串行遍历
+            }
         }
         return false;
+    }
+
+    public static boolean getRes(int [] nums, int target){
+        // note here end is initialized to len instead of (len-1)
+        int start = 0, end = nums.length;
+        while (start < end) {
+            int mid = (start + end) / 2;
+            if (nums[mid] == target) return true;
+            if (nums[mid] > nums[start]) { // nums[start..mid] is sorted
+                // check if target in left half
+                if (target < nums[mid] && target >= nums[start]) end = mid;
+                else start = mid + 1;
+            } else if (nums[mid] < nums[start]) { // nums[mid..end] is sorted
+                // check if target in right half
+                if (target > nums[mid] && target < nums[start]) start = mid + 1;
+                else end = mid;
+            } else { // have no idea about the array, but we can exclude nums[start] because nums[start] == nums[mid]
+                start++;
+            }
+        }
+        return false;
+
     }
 
 }
