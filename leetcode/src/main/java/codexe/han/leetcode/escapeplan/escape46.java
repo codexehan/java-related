@@ -58,4 +58,51 @@ public class escape46 {
         }
     }
 
+
+}
+/**
+ Given a collection of distinct integers, return all possible permutations.
+
+ Example:
+
+ Input: [1,2,3]
+ Output:
+ [
+ [1,2,3],
+ [1,3,2],
+ [2,1,3],
+ [2,3,1],
+ [3,1,2],
+ [3,2,1]
+ ]
+ */
+
+class OfficalAnswer {
+    public List<List<Integer>> permute(int[] nums) {
+        List<List<Integer>> res = new ArrayList<>();
+        if(nums == null || nums.length == 0) {
+            return res;
+        }
+        helper(nums, new boolean[nums.length], new ArrayList<>(), res);
+        return res;
+    }
+    public void helper(int[] nums, boolean[] visited, List<Integer> subList, List<List<Integer>> res) {
+
+        if(subList.size() == nums.length) {
+            res.add(new ArrayList<>(subList));
+            return;
+        } else {
+            for(int i = 0; i < nums.length; i++) {
+                if(visited[i]) {
+                    continue;
+                }
+                visited[i] = true;
+                subList.add(nums[i]);
+                helper(nums, visited, subList, res);
+                subList.remove(subList.size() - 1);
+                visited[i] = false;
+            }
+        }
+
+    }
 }
