@@ -13,15 +13,8 @@ public class escape31 {
             swap(A, i, j);                     // Switch i and j
         }
         reverse(A, i + 1, A.length - 1);       // Reverse the descending sequence*/
-        int i = A.length-1;
-        for(;i>=0&&A[i]<A[i-1];i--);
-        i=i-1;
-        if(i>=0){//找到反向递增断开的地方
+       //解决方案：自己从头写一遍1，2，3，4，5就知道该怎么做了
 
-        }
-        else{//是正向单调递减的
-
-        }
     }
 
     public void swap(int[] A, int i, int j) {
@@ -35,6 +28,7 @@ public class escape31 {
     }
 }
 /**
+ * Only open the files when you are prepared to start the problem.
  1 2 3
  1 3 2
  2 1 3
