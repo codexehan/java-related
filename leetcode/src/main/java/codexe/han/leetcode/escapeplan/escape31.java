@@ -17,10 +17,19 @@ public class escape31 {
         for(;i>=0&&A[i]<A[i-1];i--);
         i=i-1;
         if(i>=0){//找到反向递增断开的地方
-
+            int tmp = A[i];
+            A[i] = A[A.length-1];
+            A[A.length-1] = tmp;
         }
         else{//是正向单调递减的
-
+            int m=0,n=A.length-1;
+            while(m<n){
+                int tmp = A[m];
+                A[m] = A[n];
+                A[n] = tmp;
+                m++;
+                n--;
+            }
         }
     }
 

@@ -15,7 +15,7 @@ package codexe.han.leetcode.回文问题;
 //dp[i][j] = s.charAt(i)==s.charAt(j)&&(i==j-1 || i+1==j-1 || i==j||dp[i+1][j-1]);
 public class leetcode5_LongestPalindromicSubstring {
     public static void main(String[] args) {
-        longestPalindrome("abddf");
+        longestPalindrome2("abcda");
     }
     public static String longestPalindrome(String s) {
         if(s.length()==0) return "";
@@ -53,6 +53,27 @@ public class leetcode5_LongestPalindromicSubstring {
             }
         }
         return s.substring(l,r+1);
+    }
+    public static String longestPalindrome2(String s) {
+        int max = 0;
+        int left = 0;
+        int[][] dp = new int[s.length()][s.length()];
+        for(int j=0;j<s.length();j++){
+            for(int i=j;i>=0;i--){
+                if(s.charAt(i)==s.charAt(j)){
+                    dp[i][j] = i==j?1:j-i==1?2:dp[i+1][j-1]+2;
+                    if(dp[i][j]>max){
+                        left = i;
+                        max = dp[i][j];
+                    }
+                }
+                else{
+                    dp[i][j] = Math.max(dp[i+1][j],dp[i][j-1]);
+                }
+            }
+        }
+        System.out.println(left+" "+dp[0][s.length()-1]+" "+max);
+        return s.substring(left,left+dp[0][s.length()-1]);
     }
 
 }
