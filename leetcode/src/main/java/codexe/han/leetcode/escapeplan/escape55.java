@@ -1,6 +1,7 @@
 package codexe.han.leetcode.escapeplan;
 
 //TODO: TEST
+//同45
 public class escape55 {
     public boolean canJump(int[] nums){
         if(nums.length ==0) return true;

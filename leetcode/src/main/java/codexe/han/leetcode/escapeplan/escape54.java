@@ -52,4 +52,35 @@ public class escape54 {
             getResult(res, matrix, currenti-1, currentj, visited);
         }
     }
+
+    public List<Integer> spiralOrder1(int[][] matrix) {
+        List<Integer> ret = new ArrayList();
+        if(matrix.length == 0) return ret;
+        if(matrix[0].length==0) return ret;
+        int rowsComp = 0;
+        int colsComp = 0;
+        int rows = matrix.length;
+        int cols = matrix[0].length;
+        while(ret.size()<matrix.length*matrix[0].length){
+            for(int col = colsComp; col < cols - colsComp; col++){
+                ret.add(matrix[rowsComp][col]);
+                if(ret.size()==matrix.length*matrix[0].length) return ret;
+            }
+            rowsComp++;
+            for(int row = rowsComp; row < rows - rowsComp + 1; row++){
+                ret.add(matrix[row][cols-colsComp-1]);
+                if(ret.size()==matrix.length*matrix[0].length) return ret;
+            }
+            colsComp++;
+            for(int col = cols - colsComp-1; col >= colsComp-1; col--){
+                ret.add(matrix[rows-rowsComp][col]);
+                if(ret.size()==matrix.length*matrix[0].length) return ret;
+            }
+            for(int row = rows - rowsComp-1; row >= rowsComp; row--){
+                ret.add(matrix[row][colsComp-1]);
+                if(ret.size()==matrix.length*matrix[0].length) return ret;
+            }
+        }
+        return ret;
+    }
 }
