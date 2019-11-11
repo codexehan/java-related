@@ -1,20 +1,20 @@
 package codexe.han.leetcode.escapeplan;
 
 public class escape31 {
-
-    public void nextPermutation(int[] A) {
-        //从后往前找到第一个递增的位置，并置换
-     /*   if(A == null || A.length <= 1) return;
-        int i = A.length - 2;
-        while(i >= 0 && A[i] >= A[i + 1]) i--; // Find 1st id i that breaks descending order
-        if(i >= 0) {                           // If not entirely descending
-            int j = A.length - 1;              // Start from the end
-            while(A[j] <= A[i]) j--;           // Find rightmost first larger id j
-            swap(A, i, j);                     // Switch i and j
+    public void nextPermutation(int[] nums) {
+        //解决方案：自己从头写一遍1，2，3，4，5就知道该怎么做了
+        //1,2,3,5,4
+        int i=nums.length-1;
+        for(;i>0&&nums[i]<=nums[i-1];i--);
+        i = i-1;
+        if(i>=0){
+            //找到比nums[i]大的数字中最小的数字 并置换
+            //从后往前找 第一个大于nums[i]的数字
+            int j=nums.length-1;
+            for(;j>i&&nums[j]<=nums[i];j--);
+            swap(nums,i,j);//i往后依然是从大到小的
         }
-        reverse(A, i + 1, A.length - 1);       // Reverse the descending sequence*/
-       //解决方案：自己从头写一遍1，2，3，4，5就知道该怎么做了
-
+        reverse(nums,i+1,nums.length-1);
     }
 
     public void swap(int[] A, int i, int j) {

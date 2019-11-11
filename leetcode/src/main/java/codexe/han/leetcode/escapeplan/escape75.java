@@ -24,7 +24,9 @@ public class escape75 {
                 swap(i, right, nums);
                 right--;
             }
-            i++;
+            else {
+                i++;
+            }
         }
 
     }

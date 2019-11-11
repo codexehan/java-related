@@ -18,6 +18,7 @@ import org.apache.kafka.streams.errors.LogAndContinueExceptionHandler;
 import org.apache.kafka.streams.kstream.Consumed;
 import org.apache.kafka.streams.kstream.KStream;
 import org.apache.kafka.streams.kstream.Produced;
+import org.apache.kafka.streams.kstream.TimeWindows;
 
 import java.util.Properties;
 
@@ -38,6 +39,9 @@ public class ProductPriceValidateMiddleware {
 
         KStream<String, ProductPriceDTO> priceKStream = streamsBuilder.stream(Constants.KAFKA_TOPIC_PRODUCT_PRICE, Consumed.with(Serdes.String(), priceJsonSerde));
 
+        TimeWindows.of(10000L)
+                .advanceBy(1000L)
+                .until(10000L);
         //get product with purchasable status
         KStream<Long, String> purchasableProductStream = priceKStream.map((key, value) -> {
             try{
