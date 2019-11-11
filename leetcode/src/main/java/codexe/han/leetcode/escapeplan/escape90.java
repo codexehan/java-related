@@ -33,6 +33,7 @@ public class escape90 {
     }*/
 
     public static void backtracking(List<List<Integer>> finalRes,List<Integer> res, int start, int[] nums){
+        //对于同一个根节点，每一层相同的数字只能添加一次
         for(int i=start;i<nums.length;i++){
             //每次校验相同必须从start后面的开始校验，因为start对应的数字，是必须要加入到结果集中的！！！！！！！
             if(i>start&&nums[i]==nums[i-1]) continue;
@@ -43,3 +44,22 @@ public class escape90 {
         }
     }
 }
+
+/**
+ Given a collection of integers that might contain duplicates, nums, return all possible subsets (the power set).
+
+ Note: The solution set must not contain duplicate subsets.
+
+ Example:
+
+ Input: [1,2,2]
+ Output:
+ [
+ [2],
+ [1],
+ [1,2,2],
+ [2,2],
+ [1,2],
+ []
+ ]
+ */

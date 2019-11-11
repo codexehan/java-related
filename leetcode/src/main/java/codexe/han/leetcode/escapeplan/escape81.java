@@ -21,7 +21,7 @@ public class escape81 {
                     left = mid+1;
                 }
             }
-            else if(nums[left]>nums[mid]){//右边是连续递增的
+            else if(nums[mid]<nums[left]){//右边是连续递增的
                 if(nums[mid]<target && target<=nums[right]){
                     left = mid+1;
                 }
