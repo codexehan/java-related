@@ -1,6 +1,7 @@
 package codexe.han.leetcode.escapeplan;
 
 /**
+ * 假设c是重复的位置
  * 如果list1长度是a+c list2长度是b+c
  * 如果a先遍历list1 a+c 再转到list2 b+c a+c+b+c
  * 如果b先遍历list2 b+c 再转到list1 a+c b+c+a+c

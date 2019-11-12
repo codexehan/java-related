@@ -22,6 +22,7 @@ public class escape103 {
         else{
             res.get(level).add(0,node.val);
         }
+        //保证一定是从左到右执行的
         if(node.left!=null) deepFirstTravel(node.left, level+1, res);
         if(node.right!=null) deepFirstTravel(node.right, level+1, res);
     }

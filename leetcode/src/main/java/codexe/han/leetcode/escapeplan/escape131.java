@@ -5,7 +5,7 @@ import java.util.List;
 
 /**
  * 回溯算法
- * 遍历每个子串，
+ * 遍历每个子序列，
  * abcba
  * a
  * ab
@@ -42,3 +42,18 @@ public class escape131 {
         return true;
     }
 }
+
+/**
+ Given a string s, partition s such that every substring of the partition is a palindrome.
+
+ Return all possible palindrome partitioning of s.
+
+ Example:
+
+ Input: "aab"
+ Output:
+ [
+ ["aa","b"],
+ ["a","a","b"]
+ ]
+ */
