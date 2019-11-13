@@ -12,7 +12,7 @@ package codexe.han.leetcode.escapeplan;
  */
 public class escape198 {
     public int rob(int[] nums) {
-        int[] dp = new int[nums.length+2];
+        /*int[] dp = new int[nums.length+2];
         int max = 0;
         int subMax = 0;
         dp[0] = 0;
@@ -22,12 +22,23 @@ public class escape198 {
             max = Math.max(dp[i+2], max);
             subMax = Math.max(subMax,dp[i+1]);
         }
+        return max;*/
+        int[] dp = new int[nums.length+2];
+        int max = 0;
+        dp[0] = 0;
+        dp[1] = 0;
+        dp[2] = 0;
+        for(int i=0; i<nums.length;i++){
+            dp[i+3] = Math.max(dp[i]+nums[i],dp[i+1]+nums[i]);
+            max = Math.max(dp[i+3],max);
+        }
         return max;
     }
 }
 
 /**
- You are a professional robber planning to rob houses along a street. Each house has a certain amount of money stashed, the only constraint stopping you from robbing each of them is that adjacent houses have security system connected and it will automatically contact the police if two adjacent houses were broken into on the same night.
+ You are a professional robber planning to rob houses along a street. Each house has a certain amount of money stashed, the only constraint stopping you from robbing each of them
+ is that adjacent houses have security system connected and it will automatically contact the police if two adjacent houses were broken into on the same night.
 
  Given a list of non-negative integers representing the amount of money of each house, determine the maximum amount of money you can rob tonight without alerting the police.
 
