@@ -8,6 +8,7 @@ import java.util.Map;
 /**
  * hashmap 统计频率
  * bucket创建，统计前k个
+ * bucket的最大长度是nums.length，这种情况是所有的数字都相等的时候，才会出现
  */
 public class escape347 {
     public List<Integer> topKFrequent(int[] nums, int k) {
@@ -34,3 +35,20 @@ public class escape347 {
         return res;
     }
 }
+
+/**
+ Given a non-empty array of integers, return the k most frequent elements.
+
+ Example 1:
+
+ Input: nums = [1,1,1,2,2,3], k = 2
+ Output: [1,2]
+ Example 2:
+
+ Input: nums = [1], k = 1
+ Output: [1]
+ Note:
+
+ You may assume k is always valid, 1 ≤ k ≤ number of unique elements.
+ Your algorithm's time complexity must be better than O(n log n), where n is the array's size.
+ */
