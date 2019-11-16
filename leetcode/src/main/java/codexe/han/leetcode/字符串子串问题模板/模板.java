@@ -143,34 +143,41 @@ class leetcode242_ValidAnagram{
  */
 class leetcode438_FindAllAnagramsInAString {
     public List<Integer> findAnagrams(String s, String p) {
-        List<Integer> res = new ArrayList<>();
+        /*List<Integer> res = new ArrayList<>();
         Map<Character, Integer> map  = new HashMap<>();
         for(char ch : p.toCharArray()){
             map.put(ch, map.getOrDefault(ch,0)+1);
         }
-        int counter = map.size();//anagrams中应该包含的非重复字符个数
+        int counter = map.size();//unique characters in p
 
         int begin = 0, end = 0;
         while(end<s.length()){
             char chEnd = s.charAt(end);
             if(map.containsKey(chEnd)){
-                if(map.get(chEnd)-1==0) counter--;//chEnd的个数变为0，说明已经有相应个数的chEnd出现 counter最小是0
+                if(map.get(chEnd)-1==0) counter--;//amount of chEnd become 0 means we already found encough chEnd -> counter need minus 1
                 map.put(chEnd,map.get(chEnd)-1);
             }
             end++;
 
+            //we find substring in (begin, end) where p's characters are all contained in it, but could contain other characters compared with p
+            //because check begin will only occured when we found all characters in p, it will save much time
+            //this step will make us only need to check any character in the string at most twice
+            //time complexity is O(2n)->O(n) suppose s.length() is n
+            //space complexity is O(k) suppose p.length is p
             while(counter==0){
                 char chBegin = s.charAt(begin);
-                if(map.containsKey(chBegin)){
+                if(map.containsKey(chBegin)){//if the chBegin is the caracter in p
                     map.put(chBegin,map.get(chBegin)+1);
-                    if(map.get(chBegin)>0)counter++;//这边不会重复执行的，因为counter在此之后 已经不为0了
+                    if(map.get(chBegin)>0)counter++;//
                 }
                 if((end-begin)==p.length()){
                     res.add(begin);
                 }
+                //if counter is still 0, means chBegin is not character in p
                 begin++;
             }
         }
+        return res;*/
         return res;
 
 /*
