@@ -9,7 +9,7 @@ import java.util.Set;
 //举个例子，30天的票价比7天的便宜的话，那么6d，要买三十天的票
 //dp[i] = Math.min(dp[Math.max(i-1,0)]+costs[0],dp[Math.max(i-7,0)]+costs[1])
 //dp[i] = Math.min(dp[Math.max(i-30,0)]+costs[2],dp[i])
-//如果当天不需要旅行，那么花费就等于昨天的价格
+//如果当天不需要旅行，那么花费就等于昨天的价格  !!!!!!!!
 public class escape983 {
 
     /**
