@@ -1,4 +1,4 @@
-package codexe.han.leetcode.test;
+package codexe.han.leetcode.shopee;
 
 import java.util.ArrayList;
 import java.util.Arrays;
