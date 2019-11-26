@@ -143,7 +143,7 @@ class leetcode242_ValidAnagram{
  */
 class leetcode438_FindAllAnagramsInAString {
     public List<Integer> findAnagrams(String s, String p) {
-        /*List<Integer> res = new ArrayList<>();
+        List<Integer> res = new ArrayList<>();
         Map<Character, Integer> map  = new HashMap<>();
         for(char ch : p.toCharArray()){
             map.put(ch, map.getOrDefault(ch,0)+1);
@@ -177,7 +177,6 @@ class leetcode438_FindAllAnagramsInAString {
                 begin++;
             }
         }
-        return res;*/
         return res;
 
 /*

@@ -1,11 +1,11 @@
-package codexe.han.leetcode.test;
+package codexe.han.leetcode.shopee;
 
 import java.util.*;
 
 public class test {
     public static void main(String[] args) {
        // System.out.println(codingTestShopee("abbabab","ab"));
-        new test().codingTestShopee("","")
+        new test().codingTestShopee("","");
     }
     public List<Integer> codingTestShopee(String s, String p) {
         if(s==null||s.length()==0||p==null||p.length()==0) return new ArrayList<>();

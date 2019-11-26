@@ -5,6 +5,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * hashtable 是线程安全的
+ * hashmap 允许null key null value
+ * @param <K>
+ * @param <V>
+ */
 public class LRUCache<K,V> {
     private Map<K,LRUNode<K,V>> container;
     private int capacity;
