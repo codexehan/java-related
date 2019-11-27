@@ -12,18 +12,32 @@ import java.util.Map;
 @Slf4j
 public class RecordsHandler extends Thread{
 
-    public final ConsumerRecords<String, String> records;
     private Map<TopicPartition, OffsetAndMetadata> offsets;
 
-    public RecordsHandler(ConsumerRecords<String, String> records, Map<TopicPartition, OffsetAndMetadata> offsets){
-        this.records = records;
-        this.offsets = offsets;
+    private RecordsPool recordsPool;
+
+    public RecordsHandler(RecordsPool recordsPool){
+        this.recordsPool = recordsPool;
     }
 
     @Override
     public void run(){
+        //get records from pool
         //处理records
-        for(TopicPartition tp : records.partitions()){
+        //每次只拉取一个做处理，不知道会不会因为线程上下文切换，影响性能，需要做测试比较
+        try {
+            RecordNode recordNode = this.recordsPool.get();
+            ConsumerRecord<String,String> consumerRecord = recordNode.consumerRecord;
+            //handle consumer record
+            for(int i=0;i<9999999999L;i++){
+
+            }
+            this.recordsPool.ack(recordNode);
+        } catch (Exception e) {
+            log.error("get record from records pool error",e);
+        }
+
+        /*for(TopicPartition tp : records.partitions()){
             List<ConsumerRecord<String, String>> tpRecords = records.records(tp);
             //处理tp records
             long lastConsumedOffset = tpRecords.get(tpRecords.size()-1).offset();
@@ -38,6 +52,6 @@ public class RecordsHandler extends Thread{
                     }
                 }
             }
-        }
+        }*/
     }
 }
