@@ -6,6 +6,7 @@ import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.OffsetAndMetadata;
 import org.apache.kafka.common.TopicPartition;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -73,7 +74,6 @@ public class RecordsPool {
         }
     }
 
-    //TODO: 添加size参数 允许一次拉取多个记录
     public synchronized RecordNode get() throws Exception {
         /**
          * 这部分可以进一步优化
@@ -103,6 +103,36 @@ public class RecordsPool {
         }
     }
 
+    public synchronized List<RecordNode> get(int size) throws Exception{
+        /**
+         * 这部分可以进一步优化
+         * 优化的思路是 分段锁
+         * 根据partition 分段加锁
+         */
+        if(size<=0) throw new IllegalArgumentException("size must be larger than 0");
+        while(isEmpty()){
+            log.info("records pool is empty, thread {} is blocked", Thread.currentThread().getName());
+            wait();
+        }
+        //round robin get info from partition
+        int originPosition = this.topicPartitionPointer;
+        //正常来讲，前面进行空判断了，在下面这一步是一定可以获取到node的
+        for(;;) {
+            TopicPartition topicPartition = this.topicPartitionList.get(this.topicPartitionPointer++);
+            PartitionManager partitionManager = this.topicPartitionMap.get(topicPartition);
+            List<RecordNode> nodes = partitionManager.get(size);
+            if (nodes != null) {
+                return nodes;
+            }
+            if(this.topicPartitionPointer == this.topicPartitionList.size()){
+                this.topicPartitionPointer = 0;
+            }
+            if(this.topicPartitionPointer == originPosition){
+                throw new NullPointerException("Iterate all the partition but cannot get a node, please check your code");
+            }
+        }
+    }
+
     /**
      * Remove the record finally and update the size
      * @param recordNode
@@ -112,6 +142,16 @@ public class RecordsPool {
         PartitionManager partitionManager = this.topicPartitionMap.get(topicPartition);
         partitionManager.remove(recordNode);
         this.currentSize--;
+    }
+
+    public synchronized void ack(List<RecordNode> recordNodes){
+        //其实在批量get中，取得是同一个topic partition下的record
+        for(RecordNode recordNode : recordNodes){
+            TopicPartition topicPartition = recordNode.topicPartition;
+            PartitionManager partitionManager = this.topicPartitionMap.get(topicPartition);
+            partitionManager.remove(recordNode);
+            this.currentSize--;
+        }
     }
 
     public synchronized void loadOffset(Map<TopicPartition, OffsetAndMetadata> offsets){
@@ -208,6 +248,23 @@ class PartitionManager {
         RecordNode node = this.pointer;
         this.pointer = this.pointer.next;
         return node;
+    }
+
+    public synchronized List<RecordNode> get(int size){
+        if(size<=0) throw new IllegalArgumentException("size must be larger than 0");
+        if(this.pointer == this.head){
+            this.pointer = this.head.next;
+        }
+        if(this.pointer == this.tail){
+            this.pointer = this.head;
+            return null;
+        }
+        List<RecordNode> recordNodes = new ArrayList<>();
+        while(this.pointer != this.tail&&size-->0){
+            recordNodes.add(this.pointer);
+            this.pointer = this.pointer.next;
+        }
+        return recordNodes;
     }
 
     public synchronized long getMinOffset(){
