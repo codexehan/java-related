@@ -11,12 +11,8 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.LinkedBlockingDeque;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicInteger;
 
 @Slf4j
 public class KafkaConsumerClient {
@@ -25,20 +21,14 @@ public class KafkaConsumerClient {
     private ExecutorService executorService;
     private AtomicBoolean running;
     private Map<TopicPartition, OffsetAndMetadata> offsets;//max
-    private int maxPendingConsumingTask;
-    private int maxOffsetGap;
-    private AtomicInteger maxOffsetPending;
-    private AtomicInteger minOffsetPending;
-    private LinkedBlockingDeque pendingTaskQueue;
+    private RecordsPool recordsPool;
     public KafkaConsumerClient(Properties props, String topic, int threadNumber, int maxPendingConsumingTask, int maxOffsetGap){
         this.kafkaConsumer = new KafkaConsumer(props);
         this.kafkaConsumer.subscribe(Arrays.asList(topic));
-        this.pendingTaskQueue = new LinkedBlockingDeque();
-        this.executorService = new ThreadPoolExecutor(threadNumber,threadNumber,0L, TimeUnit.MILLISECONDS,pendingTaskQueue,new ThreadPoolExecutor.CallerRunsPolicy());
+        this.executorService = new ThreadPoolExecutor(threadNumber,threadNumber,0L, TimeUnit.MILLISECONDS,new ArrayBlockingQueue<>(1000),new ThreadPoolExecutor.CallerRunsPolicy());
         this.running.set(true);
         this.offsets = new HashMap<>();
-        this.maxPendingConsumingTask = maxPendingConsumingTask;
-        this.maxOffsetGap = maxOffsetGap;
+        this.recordsPool = new RecordsPool(maxPendingConsumingTask,maxOffsetGap);
     }
 
     public void consume(){
@@ -46,37 +36,32 @@ public class KafkaConsumerClient {
             while (this.running.get()) {
                 //commit offset
                 synchronized(offsets){
+                    this.recordsPool.loadOffset(offsets);
                     if(!offsets.isEmpty()){
                         this.kafkaConsumer.commitSync(offsets);
                         offsets.clear();
                     }
                 }
                 //check whether need to start flow control
-                while(!needControlFlow());
+                while(!this.recordsPool.needFlowControl());
                 try{
                     while(true){
                         ConsumerRecords<String,String> records = this.kafkaConsumer.poll(Duration.ofMillis(1000));
                         if(!records.isEmpty()){
-                            this.executorService.submit(new RecordsHandler(records,offsets));
+                            this.executorService.submit(new RecordsHandler(this.recordsPool));
                         }
                     }
+                }catch(Exception e){
+                    log.error("consume consumer records error",e);
                 }
-
             }
         }catch(Exception e){
             log.error("kafka consume error",e);
         }
     }
 
-    public boolean needControlFlow(){
-        if(this.maxOffsetPending.get() - this.minOffsetPending.get()>=this.maxOffsetGap){
-            log.warn("Start control flow, Max pending offset is {}, min pending offset is {}, which are larger than Max Offset Gap setting {}", this.maxOffsetPending, this.minOffsetPending, this.maxOffsetGap);
-            return true;
-        }
-        else if(this.pendingTaskQueue.size()>=this.maxPendingConsumingTask){
-            log.warn("Start control flow, Pending task number is {}, which are larger than Max Pending Consuming Task setting {}", this.pendingTaskQueue.size(), this.maxPendingConsumingTask);
-            return true;
-        }
-        return false;
+    public void stop(){
+        this.running.set(false);
     }
+
 }

@@ -27,15 +27,15 @@ public class RecordsPool {
     }
     public RecordsPool(){}
 
-    public synchronized boolean isFull(){
+    private synchronized boolean isFull(){
         return this.currentSize>=this.MAX_PENDING_CONSUMING_TASK;
     }
 
-    public synchronized boolean isEmpty(){
+    private synchronized boolean isEmpty(){
         return this.currentSize == 0;
     }
 
-    public synchronized boolean arriveLargestGap(){
+    private synchronized boolean arriveLargestGap(){
         for(Map.Entry<TopicPartition, PartitionManager> entry : this.topicPartitionMap.entrySet()){
             if(entry.getValue().offsetDistance() >= this.MAX_OFFSET_GAP){
                 log.info("topic {} partition {} offset distance larger than max offset gap {}, start flow control",entry.getKey().topic(),entry.getKey().partition(),this.MAX_OFFSET_GAP);
@@ -43,6 +43,10 @@ public class RecordsPool {
             }
         }
         return false;
+    }
+
+    public synchronized boolean needFlowControl(){
+        return isFull()||arriveLargestGap();
     }
 
     public synchronized void put(ConsumerRecords<String,String> records){
@@ -155,7 +159,7 @@ public class RecordsPool {
     }
 
     public synchronized void loadOffset(Map<TopicPartition, OffsetAndMetadata> offsets){
-
+        offsets.clear();
         for(TopicPartition partition : this.topicPartitionMap.keySet()){
             long minOffset = this.topicPartitionMap.get(partition).getMinOffset();
             offsets.put(partition, new OffsetAndMetadata(minOffset));
