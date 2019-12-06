@@ -38,12 +38,15 @@ public class KafkaConsumerClient {
                 synchronized(offsets){
                     this.recordsPool.loadOffset(offsets);
                     if(!offsets.isEmpty()){
+                        log.info("commit offset sync {}",offsets);
                         this.kafkaConsumer.commitSync(offsets);
                         offsets.clear();
                     }
                 }
                 //check whether need to start flow control
-                while(!this.recordsPool.needFlowControl());
+                while(!this.recordsPool.needFlowControl()){
+                    log.info("flow controlling");
+                }
                 try{
                     while(true){
                         ConsumerRecords<String,String> records = this.kafkaConsumer.poll(Duration.ofMillis(1000));
