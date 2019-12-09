@@ -23,10 +23,10 @@ public class YesStyleCrawler {
     public static void checkPrice(){
         try {
             long startTime = System.currentTimeMillis();
-            String url = "https://www.yesstyle.com/en/ariadne-double-breasted-houndstooth-coat/info.html/pid.1071167506";
+            String url = "http://www.yesstyle.com/en/ariadne-double-breasted-houndstooth-coat/info.html/pid.1071167506";
             Document doc = Jsoup
                     .connect(url)
-                    .proxy("127.0.0.1", 8080) // sets a HTTP proxy
+               //     .proxy("127.0.0.1", 8080) // sets a HTTP proxy
                     .userAgent("Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.4; en-US; rv:1.9.2.2) Gecko/20100316 Firefox/3.6.2") //
                     .header("Content-Language", "en-US") //
                     .get();
