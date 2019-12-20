@@ -1,16 +1,14 @@
 package codexe.han.kafkadatapipeline.流控功能consumer;
 
 import lombok.extern.slf4j.Slf4j;
+import org.apache.kafka.clients.consumer.ConsumerRebalanceListener;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.clients.consumer.OffsetAndMetadata;
 import org.apache.kafka.common.TopicPartition;
 
 import java.time.Duration;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Properties;
+import java.util.*;
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -22,13 +20,44 @@ public class KafkaConsumerClient {
     private AtomicBoolean running;
     private Map<TopicPartition, OffsetAndMetadata> offsets;//max
     private RecordsPool recordsPool;
-    public KafkaConsumerClient(Properties props, String topic, int threadNumber, int maxPendingConsumingTask, int maxOffsetGap){
-        this.kafkaConsumer = new KafkaConsumer(props);
-        this.kafkaConsumer.subscribe(Arrays.asList(topic));
+    public KafkaConsumerClient(Properties props, List<String> topicList, int threadNumber, int maxPendingConsumingTask, int maxOffsetGap){
         this.executorService = new ThreadPoolExecutor(threadNumber,threadNumber,0L, TimeUnit.MILLISECONDS,new ArrayBlockingQueue<>(1000),new ThreadPoolExecutor.CallerRunsPolicy());
         this.running.set(true);
         this.offsets = new HashMap<>();
         this.recordsPool = new RecordsPool(maxPendingConsumingTask,maxOffsetGap);
+        this.kafkaConsumer = new KafkaConsumer(props);
+        this.kafkaConsumer.subscribe(topicList, new ConsumerRebalanceListener() {
+            @Override
+            public void onPartitionsRevoked(Collection<TopicPartition> partitions) {
+                //如果发生再均衡，消费线程还在处理消费业务，那么可以考虑直接移除RecordsPool中partition中的数目
+                //before rebalance
+                //commit offset
+                log.info("rebalance start");
+                synchronized(offsets){
+                    recordsPool.loadOffset(offsets);
+                    if(!offsets.isEmpty()){
+                        log.info("commit offset sync {}",offsets);
+                        kafkaConsumer.commitSync(offsets);
+                        offsets.clear();
+                    }
+                }
+                //直接销毁线程池，重新创建
+                log.info("destroy old thread pool");
+                executorService.shutdownNow();
+                log.info("destroy the records pool");
+                recordsPool = null;
+            }
+
+            @Override
+            public void onPartitionsAssigned(Collection<TopicPartition> partitions) {
+                //after rebalance and before start consume
+                log.info("rebalance finished and do the initialization again");
+                log.info("initialize thread pool");
+                executorService = new ThreadPoolExecutor(threadNumber,threadNumber,0L, TimeUnit.MILLISECONDS,new ArrayBlockingQueue<>(1000),new ThreadPoolExecutor.CallerRunsPolicy());
+                log.info("initialize records pool");
+                recordsPool = new RecordsPool(maxPendingConsumingTask,maxOffsetGap);
+            }
+        });
     }
 
     public void consume(){
