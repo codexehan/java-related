@@ -6,9 +6,7 @@ import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.OffsetAndMetadata;
 import org.apache.kafka.common.TopicPartition;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 //根据partition进行划分
 @Slf4j
@@ -24,8 +22,13 @@ public class RecordsPool {
     public RecordsPool(int MAX_PENDING_CONSUMING_TASK, int MAX_OFFSET_GAP){
         this.MAX_PENDING_CONSUMING_TASK = MAX_PENDING_CONSUMING_TASK;
         this.MAX_OFFSET_GAP = MAX_OFFSET_GAP;
+        this.topicPartitionList = new LinkedList<>();
+        this.topicPartitionMap = new HashMap<>();
     }
-    public RecordsPool(){}
+    public RecordsPool(){
+        this.topicPartitionList = new LinkedList<>();
+        this.topicPartitionMap = new HashMap<>();
+    }
 
     private synchronized boolean isFull(){
         return this.currentSize>=this.MAX_PENDING_CONSUMING_TASK;

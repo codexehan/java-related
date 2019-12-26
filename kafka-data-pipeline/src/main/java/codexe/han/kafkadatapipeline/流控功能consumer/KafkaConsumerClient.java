@@ -6,6 +6,8 @@ import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.clients.consumer.OffsetAndMetadata;
 import org.apache.kafka.common.TopicPartition;
+import org.apache.kafka.common.serialization.StringDeserializer;
+import org.apache.kafka.common.serialization.StringSerializer;
 
 import java.time.Duration;
 import java.util.*;
@@ -17,7 +19,7 @@ public class KafkaConsumerClient {
     public static final String brokerList ="";
     private KafkaConsumer kafkaConsumer;
     private ExecutorService executorService;
-    private AtomicBoolean running;
+    private AtomicBoolean running = new AtomicBoolean();
     private Map<TopicPartition, OffsetAndMetadata> offsets;//max
     private RecordsPool recordsPool;
     public KafkaConsumerClient(Properties props, List<String> topicList, int threadNumber, int maxPendingConsumingTask, int maxOffsetGap){
@@ -25,7 +27,7 @@ public class KafkaConsumerClient {
         this.running.set(true);
         this.offsets = new HashMap<>();
         this.recordsPool = new RecordsPool(maxPendingConsumingTask,maxOffsetGap);
-        this.kafkaConsumer = new KafkaConsumer(props);
+        this.kafkaConsumer = new KafkaConsumer(props, new StringDeserializer(), new StringDeserializer());
         this.kafkaConsumer.subscribe(topicList, new ConsumerRebalanceListener() {
             @Override
             public void onPartitionsRevoked(Collection<TopicPartition> partitions) {
@@ -73,13 +75,14 @@ public class KafkaConsumerClient {
                     }
                 }
                 //check whether need to start flow control
-                while(!this.recordsPool.needFlowControl()){
+                while(this.recordsPool.needFlowControl()){
                     log.info("flow controlling");
                 }
                 try{
                     while(true){
                         ConsumerRecords<String,String> records = this.kafkaConsumer.poll(Duration.ofMillis(1000));
                         if(!records.isEmpty()){
+                            log.info("pull message from kafka : {}",records);
                             this.executorService.submit(new RecordsHandler(this.recordsPool));
                         }
                     }

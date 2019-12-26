@@ -61,10 +61,12 @@ public class RecordsHandler extends Thread{
     public void handleByBatch(int maxBatchSize){
         try {
             List<RecordNode> recordNodes = this.recordsPool.get(maxBatchSize);
+            log.info("handle by batch");
             if(recordNodes!=null) {
                 List<ConsumerRecord> consumerRecords = recordNodes.stream().map(t->t.consumerRecord).collect(Collectors.toList());
                 //handle consumer record
                 for(ConsumerRecord record: consumerRecords) {
+                    log.info("record : {} is processing", record);
                     for (int i = 0; i < 9999999999L; i++) {
 
                     }
