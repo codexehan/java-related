@@ -6,7 +6,6 @@ import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.clients.producer.RecordMetadata;
-import org.apache.kafka.common.serialization.LongSerializer;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.junit.Before;
 import org.junit.Test;
@@ -22,21 +21,13 @@ public class FlowControlKafkaConsumerTest {
     private String bootstrapServers;
 
     @Before
-    public void setUpKafkaConsumerClient(){
-        //create kafka producer and send some mock data
-        Properties kafkaProps =  new Properties();
-        kafkaProps.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
-        //send to dp kafka
-        KafkaProducer kafkaProducer = new KafkaProducer(kafkaProps, new StringSerializer(), new StringSerializer());
+    public void initKafkaBrokerTopic(){
+        bootstrapServers = "172.28.2.22:9090,172.28.2.22:9091,172.28.2.22:9092";
         topicList = Arrays.asList("flow_control_test");
-        for(String topic : topicList) {
-            for (Integer i = 0; i < 1000; i++) {
-                ProducerRecord producerRecord = new ProducerRecord(topic, i.toString(), i.toString());
-                kafkaProducer.send(producerRecord, (RecordMetadata r, Exception e) -> {
-                    e.printStackTrace();
-                });
-            }
-        }
+    }
+
+    @Before
+    public void setUpKafkaConsumerClient(){
         //create kafka consumer
         Properties props = new Properties();
         props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
@@ -45,6 +36,26 @@ public class FlowControlKafkaConsumerTest {
         props.put("enable.auto.commit", "false");
 
         kafkaConsumerClient = new KafkaConsumerClient(props, topicList, 5,10,10);
+
+    }
+    @Before
+    public void produceMockData(){
+        //create kafka producer and send some mock data
+        Properties kafkaProps =  new Properties();
+        kafkaProps.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
+        //send to dp kafka
+        KafkaProducer kafkaProducer = new KafkaProducer(kafkaProps, new StringSerializer(), new StringSerializer());
+        //send 1000 messages to flow_control_test topic
+        for(String topic : topicList) {
+            for (Integer i = 0; i < 1000; i++) {
+                ProducerRecord producerRecord = new ProducerRecord(topic, i.toString(), i.toString());
+                kafkaProducer.send(producerRecord, (RecordMetadata r, Exception e) -> {
+                    if(e != null){
+                        e.printStackTrace();
+                    }
+                });
+            }
+        }
     }
 
     @Test
