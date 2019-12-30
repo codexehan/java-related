@@ -54,9 +54,9 @@ public class KafkaConsumerClient {
             public void onPartitionsAssigned(Collection<TopicPartition> partitions) {
                 //after rebalance and before start consume
                 log.info("rebalance finished and do the initialization again");
-                log.info("initialize thread pool");
+                log.info("recreate thread pool");
                 executorService = new ThreadPoolExecutor(threadNumber,threadNumber,0L, TimeUnit.MILLISECONDS,new ArrayBlockingQueue<>(1000),new ThreadPoolExecutor.CallerRunsPolicy());
-                log.info("initialize records pool");
+                log.info("recreate records pool");
                 recordsPool = new RecordsPool(maxPendingConsumingTask,maxOffsetGap);
             }
         });
